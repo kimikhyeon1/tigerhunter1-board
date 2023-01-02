@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/post")
 @RequiredArgsConstructor
@@ -16,20 +18,20 @@ public class CommentConrtoller {
 
     // 댓글 작성하기
     @PostMapping("/{post_id}/comment")
-    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.createComment(post_id, commentRequestDto);
+    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        return commentService.createComment(post_id, commentRequestDto, request);
     }
 
     // 댓글 수정하기
     @PutMapping("/comment/{comment_id}")
-    public CommentResponseDto updateCommment(@PathVariable Long comment_id, @RequestBody CommentRequestDto commentRequestDto) {
-        return commentService.updateComment(comment_id, commentRequestDto);
+    public CommentResponseDto updateCommment(@PathVariable Long comment_id, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
+        return commentService.updateComment(comment_id, commentRequestDto, request);
     }
 
     // 댓글 삭제하기
     @DeleteMapping("comment/{comment_id}")
-    public ResponseEntity deleteComment(@PathVariable Long comment_id) {
-        return commentService.deleteComment(comment_id);
+    public ResponseEntity deleteComment(@PathVariable Long comment_id, HttpServletRequest request) {
+        return commentService.deleteComment(comment_id, request);
     }
 
 }

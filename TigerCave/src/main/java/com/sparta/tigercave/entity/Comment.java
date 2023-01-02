@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment {
+public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -19,21 +19,23 @@ public class Comment {
     @JoinColumn(name ="post_id")
     Post post;
 
-//    FK(외래키)로 user_id를 갖습니다.
-//    @ManyToOne
-//    @JoinColumn(name ="user_id")
-//    User user;
-//    @Column
-//    String username;
+    // FK(외래키)로 user_id를 갖습니다.
+    @ManyToOne
+    @JoinColumn(name ="users_id")
+    Users user;
+    @Column
+    String username;
     @Column
     String comment;
     // 댓글의 좋아요는 0부터 시작
     @Column
     Long comment_likes = 0L;
 
-    public Comment(Post post, CommentRequestDto commentRequestDto) {
-        this.comment = commentRequestDto.getComment();
+    public Comment(Users user, Post post, CommentRequestDto commentRequestDto) {
         this.post = post;
+        this.user = user;
+        this.username = user.getUsername();
+        this.comment = commentRequestDto.getComment();
     }
 
     public void update(CommentRequestDto commentRequestDto) {
