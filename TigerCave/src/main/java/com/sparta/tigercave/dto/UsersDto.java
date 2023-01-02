@@ -1,6 +1,7 @@
 package com.sparta.tigercave.dto;
 
 import lombok.Getter;
+
 import javax.validation.constraints.Pattern;
 
 public class UsersDto {
@@ -17,6 +18,5 @@ public class UsersDto {
             this.username = username;
             this.password = password;
         }
-
     }
 }

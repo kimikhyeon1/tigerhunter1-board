@@ -2,7 +2,7 @@ package com.sparta.tigercave.entity;
 public enum UsersRoleEnum {
     USER(Authority.USER), ADMIN(Authority.ADMIN);
 
-    private final String authority; //권한부여
+    private final String authority;
 
     UsersRoleEnum(String authority){this.authority = authority;}
 
