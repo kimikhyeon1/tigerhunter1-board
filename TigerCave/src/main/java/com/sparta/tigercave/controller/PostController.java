@@ -1,16 +1,21 @@
 package com.sparta.tigercave.controller;
 
-import com.sparta.tigercave.dto.UpdateRequestDto;
+import com.sparta.tigercave.dto.*;
+import com.sparta.tigercave.entity.StatusEnum;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,20 +23,21 @@ public class PostController {
     private final PostService postService;
     private final JwtUtil jwtUtil;
 
+
     @GetMapping("/")
     public ModelAndView home() {
         return new ModelAndView();
     }
 
     @PostMapping("/posts")
-    public postResponseDto createpost(@RequestBody postRequestDto requestDto, HttpServletRequest request) {
+    public PostResponseDto createpost(@RequestBody PostRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
             throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-        return postService.createpost(requestDto, authenticatedUserInfoDto.getUsername());
+        return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
     }
 
 //    @GetMapping("/posts")
@@ -40,16 +46,16 @@ public class PostController {
 //    }
 
     @GetMapping("/posts/id")
-    public postResponseDto getpostById(@RequestParam Long id) {
-        return postService.getpostById(id);
+    public PostResponseDto getpostById(@RequestParam Long id) {
+        return postService.getPostById(id);
     }
 
     @GetMapping("/posts")
-    public List<postResponseDto> getAllpostsOrGetpostByUsername(@RequestBody(required = false) UsernameRequestDto requestDto) {
+    public List<PostResponseDto> getAllpostsOrGetpostByUsername(@RequestBody(required = false) UserNameRequestDto requestDto) {
         if (requestDto == null) {
-            return postService.getAllposts();
+            return postService.getAllPosts();
         } else {
-            return postService.getpostByUsername(requestDto);
+            return postService.getPostByUsername(requestDto);
         }
     }
 
@@ -58,7 +64,7 @@ public class PostController {
     }
 
     @PutMapping("/admin/posts/{id}")
-    public postResponseDto updatepostAdmin(@PathVariable Long id, @RequestBody UpdateRequestDto requestDto, HttpServletRequest request) {
+    public PostResponseDto updatepostAdmin(@PathVariable Long id, @RequestBody UpdateRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
@@ -72,7 +78,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")
-    public postResponseDto updatepost(@PathVariable Long id, @RequestBody UpdateRequestDto requestDto, HttpServletRequest request) {
+    public PostResponseDto updatepost(@PathVariable Long id, @RequestBody UpdateRequestDto requestDto, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
@@ -99,7 +105,7 @@ public class PostController {
         if (!this.isAdmin(authenticatedUserInfoDto.getUserRoleEnum())) {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
-        postService.deletepostAdmin(id);
+        postService.deletePostAdmin(id);
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
     @DeleteMapping("/posts/{id}")
@@ -116,7 +122,7 @@ public class PostController {
             throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-        postService.deletepost(id, authenticatedUserInfoDto.getUsername());
+        postService.deletePost(id, authenticatedUserInfoDto.getUsername());
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
 }

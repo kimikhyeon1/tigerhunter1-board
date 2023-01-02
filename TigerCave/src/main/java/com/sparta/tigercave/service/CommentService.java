@@ -5,6 +5,7 @@ import com.sparta.tigercave.dto.CommentResponseDto;
 import com.sparta.tigercave.entity.Comment;
 import com.sparta.tigercave.entity.Post;
 import com.sparta.tigercave.repository.CommentRepository;
+import com.sparta.tigercave.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     // 댓글 작성하기
     @Transactional

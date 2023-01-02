@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.Pattern;
 
-public class UsersDto {
+public class UserDto {
     @Getter
     public static class signUpDto{
         @Pattern(regexp = "[a-z0-9]{4,10}", message = "최소 4자 이상, 10자 이하 알파벳 소문자(a~z), 숫자(0~9)를 혼합하여 입력해주세요.")

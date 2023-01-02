@@ -1,8 +1,10 @@
 package com.sparta.tigercave.jwt;
 
 
+import com.sparta.tigercave.dto.AuthenticatedUserInfoDto;
 import com.sparta.tigercave.entity.UserRoleEnum;
-import com.sparta.tigercave.security.UserDetailsServiceImpl;
+import com.sparta.tigercave.security.UserDetailServiceImpl;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -29,7 +31,7 @@ public class JwtUtil {
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final long TOKEN_TIME = 60 * 60 * 1000L;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailServiceImpl userDetailsService;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -90,5 +92,16 @@ public class JwtUtil {
     public UsernamePasswordAuthenticationToken createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    public AuthenticatedUserInfoDto validateAndGetUserInfo(String token) {
+        if (this.validateToken(token)) {
+            Claims claims = this.getUserInfoFromToken(token);
+            String username = claims.getSubject();
+            UserRoleEnum role = UserRoleEnum.valueOf(claims.get("auth").toString());
+            return new AuthenticatedUserInfoDto(role, username);
+        } else {
+            throw new IllegalArgumentException("Token Error");
+        }
     }
 }
