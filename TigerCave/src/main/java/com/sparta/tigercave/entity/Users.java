@@ -27,5 +27,11 @@ public class Users extends Timestamped{
         this.password = password;
         this.role = role;
     }
+    public boolean checkUserName(String username){
 
+        if(this.username.equals(username)){
+            return true;
+        }
+        return false;
+    }
 }
