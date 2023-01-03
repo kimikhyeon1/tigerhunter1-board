@@ -21,7 +21,7 @@ public class PostResponseDto {
     private List<CommentResponseDto> commentList;
 
     public PostResponseDto(Post post) {
-        this.createdAt = post.getCreatedAt();
+        this.createdAt = post.getCreateAt(); // post.getCreatedAt(); -> post.getCreateAt(); 으로 수정 했습니다.
         this.modifiedAt = post.getModifiedAt();
         this.id = post.getId();
         this.title = post.getTitle();
