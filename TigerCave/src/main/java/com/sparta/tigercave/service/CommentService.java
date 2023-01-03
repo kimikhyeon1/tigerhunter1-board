@@ -7,6 +7,7 @@ import com.sparta.tigercave.entity.Post;
 import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.CommentRepository;
+import com.sparta.tigercave.repository.PostRepository;
 import com.sparta.tigercave.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import static com.sparta.tigercave.exception.ErrorCode.*;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-
+    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UsersRepository usersRepository;
 
