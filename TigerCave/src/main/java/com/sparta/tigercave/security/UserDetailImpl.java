@@ -16,6 +16,7 @@ public class UserDetailImpl implements UserDetails {
 
     private final BigInteger userId;
     private final String username;
+
     private final String password;
 
     public UserDetailImpl(User user, BigInteger userId, String username, String password){
@@ -42,6 +43,11 @@ public class UserDetailImpl implements UserDetails {
 
         return authorities;
     }
+
+    public BigInteger getUserId() {
+        return this.userId;
+    }
+
     @Override
     public String getPassword() {
         return this.password;
@@ -51,8 +57,6 @@ public class UserDetailImpl implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
-    public BigInteger getUserId() {return this.userId;}
 
     @Override
     public boolean isAccountNonExpired() {
