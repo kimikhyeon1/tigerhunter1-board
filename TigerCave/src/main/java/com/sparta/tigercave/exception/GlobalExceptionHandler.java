@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static com.sparta.tigercave.exception.ErrorCode.SERVER_ERROR;
+
 //로깅 : 프로그램 동작시 발생하는 모든 일을 기록하는 것 (서비스 동작 상태, 장애)
 //@Slf4j : 로깅 구현을 위해 추가
 //@RestControllerAdvice : 모든 rest controller에서 발생하는 exception 처리
@@ -24,8 +26,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     //서버에러 별도 처리
     @ExceptionHandler({ Exception.class })
-    protected ResponseEntity<ErrorResponse> handleServerException(CustomException e) {
-        log.error("handleServerException", e.getErrorCode());
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
+    protected ResponseEntity<ErrorResponse> handleServerException() {
+        log.error("handleServerException", SERVER_ERROR);
+        return ErrorResponse.toResponseEntity(SERVER_ERROR);
     }
 }

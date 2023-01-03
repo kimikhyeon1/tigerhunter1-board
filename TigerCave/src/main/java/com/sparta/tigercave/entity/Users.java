@@ -9,7 +9,7 @@ import java.math.BigInteger;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Users{
+public class Users extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,5 +26,12 @@ public class Users{
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    public boolean checkUserName(String username){
+
+        if(this.username.equals(username)){
+            return true;
+        }
+        return false;
     }
 }

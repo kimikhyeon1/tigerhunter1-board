@@ -12,6 +12,7 @@ import java.util.Collection;
 public class UserDetailImpl implements UserDetails {
 
     private final Users users;
+<<<<<<< HEAD
 
     private final String username;
     private final String password;
@@ -23,13 +24,29 @@ public class UserDetailImpl implements UserDetails {
     }
 
     public Users users(){
+=======
+    private final String username;
+
+    public UserDetailImpl(Users users, String username) {
+        this.users = users;
+        this.username = username;
+    }
+
+    public Users getUser() {
+>>>>>>> origin/develop
         return users;
     }
 
     @Override
+<<<<<<< HEAD
     public Collection<? extends GrantedAuthority> getAuthorities(){
         UsersRoleEnum roleEnum = users.getRole();
         String authority = roleEnum.getAuthority();
+=======
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        UsersRoleEnum role = users.getRole();
+        String authority = role.getAuthority();
+>>>>>>> origin/develop
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -39,12 +56,21 @@ public class UserDetailImpl implements UserDetails {
     }
 
     @Override
+<<<<<<< HEAD
     public String getPassword() {
         return null;
     }
 
     @Override
     public String getUsername() {
+=======
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public String getPassword() {
+>>>>>>> origin/develop
         return null;
     }
 
