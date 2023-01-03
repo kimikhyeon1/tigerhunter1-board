@@ -19,6 +19,7 @@ public class PostResponseDto {
     private String username;
     private String contents;
     private List<CommentResponseDto> commentList;
+    private int likecount;
 
     public PostResponseDto(Post post) {
         this.createdAt = post.getCreateAt(); // post.getCreatedAt(); -> post.getCreateAt(); 으로 수정 했습니다.
@@ -27,6 +28,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.username = post.getUser().getUsername();
         this.contents = post.getContents();
+        this.likecount = post.getCountOfLikes();
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 

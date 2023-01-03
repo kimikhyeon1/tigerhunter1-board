@@ -15,11 +15,13 @@ public class CommentResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
+
     public CommentResponseDto(Comment comment) {
         this.createAt = comment.getCreateAt(); // post.getCreatedAt(); -> post.getCreateAt(); 으로 수정 했습니다.
         this.modifiedAt = comment.getModifiedAt();
         this.id = comment.getId();
         this.comment = comment.getComment();
         this.comment_likes = comment.getComment_likes();
+
     }
 }
