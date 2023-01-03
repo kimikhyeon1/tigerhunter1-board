@@ -3,11 +3,14 @@ package com.sparta.tigercave.entity;
 import com.sparta.tigercave.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@DynamicInsert
 @NoArgsConstructor
 public class Comment extends Timestamped{
     @Id
@@ -28,8 +31,9 @@ public class Comment extends Timestamped{
     @Column
     String comment;
     // 댓글의 좋아요는 0부터 시작
-    @Column
-    Long comment_likes = 0L;
+    @ColumnDefault("0")
+    @Column(nullable = false)
+    Long comment_likes;
 
     public Comment(Users user, Post post, CommentRequestDto commentRequestDto) {
         this.post = post;
