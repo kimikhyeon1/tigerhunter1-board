@@ -31,9 +31,7 @@ public class JwtUtil {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${jwt.response.header}")
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    @Value("${jwt.token.prefix}")
     private static final String BEARER_PREFIX = "Bearer ";
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -78,6 +76,7 @@ public class JwtUtil {
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
+        System.out.println(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody());
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
