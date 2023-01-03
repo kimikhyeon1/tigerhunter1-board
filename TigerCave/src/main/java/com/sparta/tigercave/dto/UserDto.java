@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Pattern;
 
-public class UsersDto {
+public class UserDto {
     @Getter
     @NoArgsConstructor
     public static class signUpRequestDto{
