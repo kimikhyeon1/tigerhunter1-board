@@ -3,6 +3,8 @@ package com.sparta.tigercave.jwt;
 
 import com.sparta.tigercave.dto.AuthenticatedUserInfoDto;
 import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.exception.CustomException;
+import com.sparta.tigercave.exception.ErrorCode;
 import com.sparta.tigercave.security.UserDetailServiceImpl;
 
 import io.jsonwebtoken.*;
@@ -101,7 +103,7 @@ public class JwtUtil {
             UsersRoleEnum role = UsersRoleEnum.valueOf(claims.get("auth").toString());
             return new AuthenticatedUserInfoDto(role, username);
         } else {
-            throw new CustomException("Token Error");
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
 }

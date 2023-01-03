@@ -3,6 +3,7 @@ package com.sparta.tigercave.controller;
 import com.sparta.tigercave.dto.UsersDto;
 import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.repository.UsersRepository;
 import com.sparta.tigercave.service.UsersService;
 import lombok.RequiredArgsConstructor;

@@ -24,7 +24,12 @@ public class Users extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UsersRoleEnum role;
 
-    public Users(String username, String password, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
+    public Users(String username, String password, UsersRoleEnum role){
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+   /* public Users(String username, String password, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -34,7 +39,7 @@ public class Users extends Timestamped{
         if (password == null) {
             throw new SQLIntegrityConstraintViolationException("비밀번호를 입력하세요.");
         }
-    }
+    }*/
     public boolean checkUserName(String username){
 
         if(this.username.equals(username)){

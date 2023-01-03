@@ -3,6 +3,7 @@ package com.sparta.tigercave.service;
 import com.sparta.tigercave.dto.CommentRequestDto;
 import com.sparta.tigercave.dto.CommentResponseDto;
 import com.sparta.tigercave.entity.Comment;
+import com.sparta.tigercave.entity.Post;
 import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.CommentRepository;

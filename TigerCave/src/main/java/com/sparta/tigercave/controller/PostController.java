@@ -3,6 +3,7 @@ package com.sparta.tigercave.controller;
 import com.sparta.tigercave.dto.*;
 import com.sparta.tigercave.entity.StatusEnum;
 import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.List;
+
+import static com.sparta.tigercave.exception.ErrorCode.INVALID_AUTH_TOKEN;
+import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +38,7 @@ public class PostController {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
-            throw new CustomException("토큰이 유효하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
@@ -64,11 +68,11 @@ public class PostController {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
-            throw new CustomException("토큰이 유효하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         if (!this.isAdmin(authenticatedUserInfoDto.getUsersRoleEnum())) {
-            throw new CustomException("권한이 없습니다.");
+            throw new CustomException(INVALID_AUTH_TOKEN);
         }
         return postService.updateAdmin(id, requestDto);
     }
@@ -78,7 +82,7 @@ public class PostController {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
-            throw new CustomException("토큰이 유효하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         return postService.update(id, requestDto, authenticatedUserInfoDto.getUsername());
@@ -93,11 +97,11 @@ public class PostController {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
-            throw new CustomException("토큰이 유효하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         if (!this.isAdmin(authenticatedUserInfoDto.getUsersRoleEnum())) {
-            throw new CustomException("권한이 없습니다.");
+            throw new CustomException(INVALID_AUTH_TOKEN);
         }
         postService.deletePostAdmin(id);
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
@@ -112,7 +116,7 @@ public class PostController {
         String token = jwtUtil.resolveToken(request);
 
         if (token == null) {
-            throw new CustomException("토큰이 유효하지 않습니다.");
+            throw new CustomException(INVALID_TOKEN);
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         postService.deletePost(id, authenticatedUserInfoDto.getUsername());
