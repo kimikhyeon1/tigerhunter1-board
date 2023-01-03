@@ -5,6 +5,7 @@ import com.sparta.tigercave.entity.StatusEnum;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
+import com.sparta.tigercave.security.UserDetailImpl;
 import com.sparta.tigercave.service.PostLikeService;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -132,8 +133,8 @@ public class PostController {
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
     @PostMapping("/api/posts/{postId}/like")
-    public Long addLike(@PathVariable Long postId){
-        return postLikeService.addLike(postId);
+    public Long addLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
+        return postLikeService.addLike(postId,userDetails);
     }
 
 }

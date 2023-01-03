@@ -52,6 +52,7 @@ public class UserDetailImpl implements UserDetails {
         return this.username;
     }
 
+    public BigInteger getUserId() {return this.userId;}
 
     @Override
     public boolean isAccountNonExpired() {
