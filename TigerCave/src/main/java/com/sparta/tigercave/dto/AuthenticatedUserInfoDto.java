@@ -1,15 +1,15 @@
 package com.sparta.tigercave.dto;
 
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import lombok.Getter;
 
 @Getter
 public class AuthenticatedUserInfoDto {
-    private UserRoleEnum userRoleEnum;
+    private UsersRoleEnum usersRoleEnum;
     private String username;
 
-    public AuthenticatedUserInfoDto(UserRoleEnum userRoleEnum, String username) {
-        this.userRoleEnum = userRoleEnum;
+    public AuthenticatedUserInfoDto(UsersRoleEnum usersRoleEnum, String username) {
+        this.usersRoleEnum = usersRoleEnum;
         this.username = username;
     }
 }

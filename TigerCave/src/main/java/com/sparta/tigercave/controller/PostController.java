@@ -2,7 +2,7 @@ package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.*;
 import com.sparta.tigercave.entity.StatusEnum;
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +55,8 @@ public class PostController {
         }
     }
 
-    private boolean isAdmin(UserRoleEnum userRoleEnum) {
-        return userRoleEnum == UserRoleEnum.ADMIN;
+    private boolean isAdmin(UsersRoleEnum usersRoleEnum) {
+        return usersRoleEnum == UsersRoleEnum.ADMIN;
     }
 
     @PutMapping("/admin/posts/{id}")
@@ -67,7 +67,7 @@ public class PostController {
             throw new CustomException("토큰이 유효하지 않습니다.");
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-        if (!this.isAdmin(authenticatedUserInfoDto.getUserRoleEnum())) {
+        if (!this.isAdmin(authenticatedUserInfoDto.getUsersRoleEnum())) {
             throw new CustomException("권한이 없습니다.");
         }
         return postService.updateAdmin(id, requestDto);
@@ -96,7 +96,7 @@ public class PostController {
             throw new CustomException("토큰이 유효하지 않습니다.");
         }
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-        if (!this.isAdmin(authenticatedUserInfoDto.getUserRoleEnum())) {
+        if (!this.isAdmin(authenticatedUserInfoDto.getUsersRoleEnum())) {
             throw new CustomException("권한이 없습니다.");
         }
         postService.deletePostAdmin(id);

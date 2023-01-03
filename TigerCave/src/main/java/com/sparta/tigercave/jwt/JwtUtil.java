@@ -2,7 +2,7 @@ package com.sparta.tigercave.jwt;
 
 
 import com.sparta.tigercave.dto.AuthenticatedUserInfoDto;
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import com.sparta.tigercave.security.UserDetailServiceImpl;
 
 import io.jsonwebtoken.*;
@@ -54,7 +54,7 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String username, UserRoleEnum role) {
+    public String createToken(String username, UsersRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
@@ -98,7 +98,7 @@ public class JwtUtil {
         if (this.validateToken(token)) {
             Claims claims = this.getUserInfoFromToken(token);
             String username = claims.getSubject();
-            UserRoleEnum role = UserRoleEnum.valueOf(claims.get("auth").toString());
+            UsersRoleEnum role = UsersRoleEnum.valueOf(claims.get("auth").toString());
             return new AuthenticatedUserInfoDto(role, username);
         } else {
             throw new CustomException("Token Error");

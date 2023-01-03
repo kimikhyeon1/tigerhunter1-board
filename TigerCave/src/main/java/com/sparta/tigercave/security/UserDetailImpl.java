@@ -1,7 +1,7 @@
 package com.sparta.tigercave.security;
 
 import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +25,7 @@ public class UserDetailImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = users.getRole();
+        UsersRoleEnum role = users.getRole();
         String authority = role.getAuthority();
 
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);

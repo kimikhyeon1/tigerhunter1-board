@@ -1,10 +1,10 @@
 package com.sparta.tigercave.entity;
-public enum UserRoleEnum {
+public enum UsersRoleEnum {
     USER(Authority.USER), ADMIN(Authority.ADMIN);
 
     private final String authority;
 
-    UserRoleEnum(String authority){this.authority = authority;}
+    UsersRoleEnum(String authority){this.authority = authority;}
 
     public String getAuthority(){
         return this.authority;

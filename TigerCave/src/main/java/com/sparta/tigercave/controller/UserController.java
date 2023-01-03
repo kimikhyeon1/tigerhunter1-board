@@ -2,7 +2,7 @@ package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.UserDto;
 import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import com.sparta.tigercave.repository.UserRepository;
 import com.sparta.tigercave.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class UserController {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });
 
-        UserRoleEnum role = UserRoleEnum.USER;
+        UsersRoleEnum role = UsersRoleEnum.USER;
 
         usersService.signUp(signUpDto, role);
         return new ResponseEntity<>("회원가입에 성공하였습니다", HttpStatus.OK);

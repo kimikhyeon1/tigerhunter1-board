@@ -2,7 +2,6 @@ package com.sparta.tigercave.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.id.IdentifierGenerationException;
 
 import javax.persistence.*;
@@ -23,9 +22,9 @@ public class Users extends Timestamped{
     private String password;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRoleEnum role;
+    private UsersRoleEnum role;
 
-    public Users(String username, String password, UserRoleEnum role) throws SQLIntegrityConstraintViolationException {
+    public Users(String username, String password, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
         this.username = username;
         this.password = password;
         this.role = role;
