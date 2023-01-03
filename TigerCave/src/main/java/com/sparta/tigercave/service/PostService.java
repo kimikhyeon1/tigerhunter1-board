@@ -25,14 +25,10 @@ public class PostService {
     private final UsersRepository userRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
-<<<<<<< Updated upstream
         User users = userRepository.findByUsername(username).orElseThrow(
-=======
-        User user = userRepository.findByUsername(username).orElseThrow(
->>>>>>> Stashed changes
                 () -> new CustomException(USER_NOT_FOUND)
         );
-        Post post = new Post(requestDto, user);
+        Post post = new Post(requestDto, users);
         blogRepository.save(post);
         return new PostResponseDto(post);
     }

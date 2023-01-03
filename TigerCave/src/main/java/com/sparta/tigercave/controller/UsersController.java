@@ -2,11 +2,7 @@ package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.UsersDto;
 import com.sparta.tigercave.entity.User;
-<<<<<<< Updated upstream
 import com.sparta.tigercave.entity.UserRoleEnum;
-=======
-import com.sparta.tigercave.entity.UsersRoleEnum;
->>>>>>> Stashed changes
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.repository.UsersRepository;

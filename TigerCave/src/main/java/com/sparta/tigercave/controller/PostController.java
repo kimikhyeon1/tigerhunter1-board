@@ -5,7 +5,6 @@ import com.sparta.tigercave.entity.StatusEnum;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
-import com.sparta.tigercave.service.PostLikeService;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -27,7 +26,6 @@ import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final PostLikeService postLikeService;
     private final JwtUtil jwtUtil;
 
 
@@ -130,10 +128,5 @@ public class PostController {
         AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
         postService.deletePost(id, authenticatedUserInfoDto.getUsername());
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
-    }
-
-    @PostMapping("/api/posts/{postId}/like")
-    public Long addLike(@PathVariable Long postId,Long userId){
-        return postLikeService.addLike(postId,userId);
     }
 }

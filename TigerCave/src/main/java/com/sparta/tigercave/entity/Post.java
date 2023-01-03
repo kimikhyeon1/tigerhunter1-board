@@ -31,18 +31,6 @@ public class Post extends Timestamped{
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-<<<<<<< Updated upstream
-=======
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<PostLike> likes = new ArrayList<>();
-
-    public int getCountOfLikes(){
-        return this.likes.size();
-    }
-
-
-
->>>>>>> Stashed changes
     public Post(PostRequestDto requestDto, User user) {
         this.user = user;
         this.title = requestDto.getTitle();
