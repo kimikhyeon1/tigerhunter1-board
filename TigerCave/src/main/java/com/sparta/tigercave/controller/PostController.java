@@ -2,7 +2,7 @@ package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.*;
 import com.sparta.tigercave.entity.StatusEnum;
-import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.service.PostService;
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_AUTH_TOKEN;
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
@@ -67,8 +66,8 @@ public class PostController {
 //        }
 //    }
 
-    private boolean isAdmin(UsersRoleEnum usersRoleEnum) {
-        return usersRoleEnum == UsersRoleEnum.ADMIN;
+    private boolean isAdmin(UserRoleEnum usersRoleEnum) {
+        return usersRoleEnum == UserRoleEnum.ADMIN;
     }
 
     @PutMapping("/admin/posts/{id}")

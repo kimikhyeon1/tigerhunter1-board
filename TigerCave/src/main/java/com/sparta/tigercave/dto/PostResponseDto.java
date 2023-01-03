@@ -25,7 +25,7 @@ public class PostResponseDto {
         this.modifiedAt = post.getModifiedAt();
         this.id = post.getId();
         this.title = post.getTitle();
-        this.username = post.getUsers().getUsername();
+        this.username = post.getUser().getUsername();
         this.contents = post.getContents();
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();

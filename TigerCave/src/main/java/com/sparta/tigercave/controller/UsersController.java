@@ -1,8 +1,8 @@
 package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.UsersDto;
-import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.repository.UsersRepository;
@@ -40,18 +40,18 @@ public class UsersController {
         }
 
         //이미 존재한 user인지 확인
-        Optional<Users> check_result = usersRepository.findByUsername(signUpRequestDto.getUsername());
+        Optional<User> check_result = usersRepository.findByUsername(signUpRequestDto.getUsername());
         check_result.ifPresent(m -> {
             throw new CustomException(DUPLICATE_USERNAME);
         });
 
-        UsersRoleEnum role = UsersRoleEnum.USER;
+        UserRoleEnum role = UserRoleEnum.USER;
 
         if(signUpRequestDto.isAdmin()){
             if(!signUpRequestDto.getAdminToken().equals(ADMIN_TOKEN)){
                 throw new CustomException(ADMIN_PASSWORD_NOT_FOUND);
             }
-            role = UsersRoleEnum.ADMIN;
+            role = UserRoleEnum.ADMIN;
         }
 
         usersService.signUp(signUpRequestDto, role);
@@ -61,9 +61,9 @@ public class UsersController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, HttpServletResponse response){
 
-        UsersDto.loginResponseDto users = usersService.login(username, password);
+        UsersDto.loginResponseDto user = usersService.login(username, password);
         
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(users.getUsername(), users.getRole()));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
         return new ResponseEntity("로그인에 성공하였습니다.", HttpStatus.OK);
     }
 }

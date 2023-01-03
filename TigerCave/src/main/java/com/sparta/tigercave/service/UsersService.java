@@ -1,8 +1,8 @@
 package com.sparta.tigercave.service;
 
 import com.sparta.tigercave.dto.UsersDto;
-import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,19 +22,19 @@ public class UsersService {
     private final UsersRepository usersRepository;
 
     @Transactional
-    public void signUp(UsersDto.signUpRequestDto signUpDto, UsersRoleEnum role) {
+    public void signUp(UsersDto.signUpRequestDto signUpDto, UserRoleEnum role) {
         String password = passwordEncoder.encode(signUpDto.getPassword());
-        usersRepository.save(new Users(signUpDto.getUsername(), password, role));
+        usersRepository.save(new User(signUpDto.getUsername(), password, role));
     }
 
     @Transactional(readOnly = true)
     public UsersDto.loginResponseDto login(String username, String password) {
 
-        Users users = usersRepository.findByUsername(username).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        User user = usersRepository.findByUsername(username).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
-        if (!passwordEncoder.matches(password, users.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(PASSWORD_NOT_FOUND);
         }
-        return new UsersDto.loginResponseDto(users.getUsername(), users.getPassword(), users.getRole());
+        return new UsersDto.loginResponseDto(user.getUsername(), user.getPassword(), user.getRole());
     }
 }

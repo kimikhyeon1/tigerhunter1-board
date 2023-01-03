@@ -4,7 +4,7 @@ import com.sparta.tigercave.dto.CommentRequestDto;
 import com.sparta.tigercave.dto.CommentResponseDto;
 import com.sparta.tigercave.entity.Comment;
 import com.sparta.tigercave.entity.Post;
-import com.sparta.tigercave.entity.Users;
+import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.CommentRepository;
 import com.sparta.tigercave.repository.PostRepository;
@@ -15,10 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-import static com.sparta.tigercave.entity.UsersRoleEnum.ADMIN;
+import static com.sparta.tigercave.entity.UserRoleEnum.ADMIN;
 import static com.sparta.tigercave.exception.ErrorCode.*;
 
 @Service
@@ -38,7 +37,7 @@ public class CommentService {
         );
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        Users user = usersRepository.findByUsername(userDetails.getUsername()).get();
+        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
 
         // DB에 댓글을 저장하기
         Comment comment = commentRepository.saveAndFlush(new Comment(user, post, commentRequestDto));
@@ -55,7 +54,7 @@ public class CommentService {
         );
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        Users user = usersRepository.findByUsername(userDetails.getUsername()).get();
+        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
 
         //로그인한 유저와 댓글을 작성한 유저의 일치 여부를 확인하기
         if(comment.getUsername() != user.getUsername() && user.getRole() != ADMIN) { // 작성자도 어드민도 아니면 댓글을 수정 할 수 없다.
@@ -74,7 +73,7 @@ public class CommentService {
         );
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        Users user = usersRepository.findByUsername(userDetails.getUsername()).get();
+        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
 
         //로그인한 유저와 댓글을 작성한 유저의 일치 여부를 확인하기
         if(comment.getUsername() != user.getUsername() && user.getRole() != ADMIN) { // 작성자도 어드민도 아니면 댓글을 삭제 할 수 없다.

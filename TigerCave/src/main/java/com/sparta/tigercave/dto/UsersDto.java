@@ -1,6 +1,6 @@
 package com.sparta.tigercave.dto;
 
-import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,9 +29,9 @@ public class UsersDto {
 
         private String password;
 
-        private UsersRoleEnum role;
+        private UserRoleEnum role;
 
-        public loginResponseDto(String username, String password, UsersRoleEnum role){
+        public loginResponseDto(String username, String password, UserRoleEnum role){
             this.username = username;
             this.password = password;
             this.role = role;

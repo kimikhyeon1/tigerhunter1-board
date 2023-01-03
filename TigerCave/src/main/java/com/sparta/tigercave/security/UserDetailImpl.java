@@ -1,35 +1,39 @@
 package com.sparta.tigercave.security;
 
-import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.entity.UsersRoleEnum;
+import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetailImpl implements UserDetails {
 
-    private final Users users;
+    private final User user;
 
+    private final BigInteger userId;
     private final String username;
 
     private final String password;
 
-    public UserDetailImpl(Users users, String username, String password){
-        this.users = users;
+    public UserDetailImpl(User user, BigInteger userId, String username, String password){
+        this.user = user;
+        this.userId = userId;
         this.username = username;
         this.password = password;
     }
 
-    public Users users(){
-        return users;
+
+    public User users(){
+        return user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        UsersRoleEnum roleEnum = users.getRole();
+        UserRoleEnum roleEnum = user.getRole();
         String authority = roleEnum.getAuthority();
 
 
@@ -48,7 +52,6 @@ public class UserDetailImpl implements UserDetails {
     public String getUsername() {
         return this.username;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

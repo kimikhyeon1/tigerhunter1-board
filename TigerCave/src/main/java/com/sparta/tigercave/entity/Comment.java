@@ -25,7 +25,7 @@ public class Comment extends Timestamped{
     // FK(외래키)로 user_id를 갖습니다.
     @ManyToOne
     @JoinColumn(name ="users_id")
-    Users user;
+    User user;
     @Column
     String username;
     @Column
@@ -35,7 +35,7 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     Long comment_likes;
 
-    public Comment(Users user, Post post, CommentRequestDto commentRequestDto) {
+    public Comment(User user, Post post, CommentRequestDto commentRequestDto) {
         this.post = post;
         this.user = user;
         this.username = user.getUsername();

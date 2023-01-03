@@ -1,9 +1,8 @@
 package com.sparta.tigercave.service;
 
 import com.sparta.tigercave.dto.*;
-import com.sparta.tigercave.entity.Comment;
 import com.sparta.tigercave.entity.Post;
-import com.sparta.tigercave.entity.Users;
+import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.PostRepository;
 import com.sparta.tigercave.repository.UsersRepository;
@@ -26,7 +25,7 @@ public class PostService {
     private final UsersRepository userRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
-        Users users = userRepository.findByUsername(username).orElseThrow(
+        User users = userRepository.findByUsername(username).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)
         );
         Post post = new Post(requestDto, users);
@@ -63,7 +62,7 @@ public class PostService {
 
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        Users user = usersRepository.findByUsername(userDetails.getUsername()).get();
+        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
 
         // DB에 댓글을 저장하기
         Post post = blogRepository.saveAndFlush(new Post(user, postRequestDto));
