@@ -7,7 +7,7 @@ import com.sparta.tigercave.dto.UserNameRequestDto;
 import com.sparta.tigercave.entity.Post;
 import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.repository.PostRepository;
-import com.sparta.tigercave.repository.UserRepository;
+import com.sparta.tigercave.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository blogRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
-        Users users = userRepository.findByUsername(username).orElseThrow(
+        Users users = usersRepository.findByUsername(username).orElseThrow(
                 () -> new CustomException("아이디가 존재하지 않습니다.")
         );
         Post post = new Post(requestDto, users);

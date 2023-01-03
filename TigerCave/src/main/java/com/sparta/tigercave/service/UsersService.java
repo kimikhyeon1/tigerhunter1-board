@@ -1,9 +1,9 @@
 package com.sparta.tigercave.service;
 
-import com.sparta.tigercave.dto.UserDto;
+import com.sparta.tigercave.dto.UsersDto;
 import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.entity.UsersRoleEnum;
-import com.sparta.tigercave.repository.UserRepository;
+import com.sparta.tigercave.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,10 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class UsersService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     @Transactional
-    public void signUp(UserDto.signUpDto signUpDto, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
+    public void signUp(UsersDto.signUpDto signUpDto, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
         String password = passwordEncoder.encode(signUpDto.getPassword());
-        userRepository.save(new Users(signUpDto.getUsername(), password, role));
+        usersRepository.save(new Users(signUpDto.getUsername(), password, role));
     }
 }
