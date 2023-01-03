@@ -4,25 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UsersController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Timestamped.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Timestamped.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/ErrorCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/repository/UsersRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/Security.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application.properties" afterDir="false" />
-=======
-    <list default="true" id="d71caf9a-d0e2-4140-b882-e28ad6675512" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
->>>>>>> origin/develop
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,17 +26,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExternalProjectsData">
-<<<<<<< HEAD
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
-=======
->>>>>>> origin/develop
-    <projectState path="$PROJECT_DIR$/TigerCave">
-      <ProjectState />
-    </projectState>
   </component>
-<<<<<<< HEAD
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -76,20 +65,6 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Jkbs50mtFSzG19QguflpHqtKLn" />
-=======
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
-      </map>
-    </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2Jl74MrXfVNvtC0voE1c138i9uH" />
->>>>>>> origin/develop
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -103,33 +78,21 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-<<<<<<< HEAD
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;azul-17&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/beleif/Desktop/IdeaProjects/board&quot;,
-=======
-    &quot;last_opened_file_path&quot;: &quot;C:/tigerhunter1-board/TigerCave&quot;,
->>>>>>> origin/develop
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-<<<<<<< HEAD
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-=======
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
->>>>>>> origin/develop
     &quot;spring.configuration.checksum&quot;: &quot;518d29472d81a45f7e69d3ac3f81d8df&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-<<<<<<< HEAD
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\beleif\Desktop\IdeaProjects\tigerhunter1-board\TigerCave\src\main\resources" />
@@ -155,29 +118,6 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-=======
-  <component name="RunManager" selected="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]">
-    <configuration name="C:/tigerhunter1-board/TigerCave [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/TigerCave" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dependencies" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
->>>>>>> origin/develop
     </configuration>
     <configuration name="TigerCaveApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="TigerCave.main" />
@@ -186,21 +126,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-<<<<<<< HEAD
-=======
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
-        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
-        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
-      </list>
-    </recent_temporary>
->>>>>>> origin/develop
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-<<<<<<< HEAD
       <changelist id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="" />
       <created>1672625231815</created>
       <option name="number" value="Default" />
@@ -213,28 +142,12 @@
       <workItem from="1672704506644" duration="11842000" />
       <workItem from="1672716413096" duration="1324000" />
       <workItem from="1672717779849" duration="1561000" />
-=======
-      <changelist id="d71caf9a-d0e2-4140-b882-e28ad6675512" name="Changes" comment="" />
-      <created>1672640623980</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1672640623980</updated>
-      <workItem from="1672640628398" duration="1818000" />
-      <workItem from="1672642537166" duration="267000" />
-      <workItem from="1672642857631" duration="480000" />
-      <workItem from="1672643522970" duration="32000" />
-      <workItem from="1672643958336" duration="2714000" />
-      <workItem from="1672704726149" duration="173000" />
-      <workItem from="1672704917593" duration="62000" />
-      <workItem from="1672705014684" duration="20000" />
->>>>>>> origin/develop
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-<<<<<<< HEAD
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -258,6 +171,4 @@
       </map>
     </option>
   </component>
-=======
->>>>>>> origin/develop
 </project>

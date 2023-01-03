@@ -90,11 +90,6 @@ public class JwtUtil {
         return null;
     }
 
-    //토큰에서 회원정보 추출
-    public Claims getUserFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
-
     //인증객체 생성
     public Authentication createAuthentication(String username){
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);

@@ -34,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
             //토큰이 유효하면 토큰으로부터 유저정보를 받아오기
-            Claims claims = jwtUtil.getUserFromToken(token);
+            Claims claims = jwtUtil.getUserInfoFromToken(token);
             //SecurityContext에 Authentication 객체를 저장.
             setAuthentication(claims.getSubject());
         }
