@@ -32,7 +32,7 @@ public class Comment extends Timestamped{
     String comment;
     // 댓글의 좋아요는 0부터 시작
     @ColumnDefault("0")
-    @Column
+    @Column(nullable = false)
     Long comment_likes;
 
     public Comment(Users user, Post post, CommentRequestDto commentRequestDto) {
