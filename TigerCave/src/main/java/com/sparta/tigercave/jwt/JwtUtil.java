@@ -101,7 +101,7 @@ public class JwtUtil {
             UserRoleEnum role = UserRoleEnum.valueOf(claims.get("auth").toString());
             return new AuthenticatedUserInfoDto(role, username);
         } else {
-            throw new IllegalArgumentException("Token Error");
+            throw new CustomException("Token Error");
         }
     }
 }

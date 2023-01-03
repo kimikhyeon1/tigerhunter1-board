@@ -25,14 +25,14 @@ public class Post extends Timestamped{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private User user;
+    private Users users;
 
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-    public Post(PostRequestDto requestDto, User user) {
-        this.user = user;
+    public Post(PostRequestDto requestDto, Users users) {
+        this.users = users;
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
@@ -43,7 +43,7 @@ public class Post extends Timestamped{
     }
 
     public boolean isPostWriter(String username) {
-        return username.equals(this.getUser().getUsername());
+        return username.equals(this.getUsers().getUsername());
     }
 
 

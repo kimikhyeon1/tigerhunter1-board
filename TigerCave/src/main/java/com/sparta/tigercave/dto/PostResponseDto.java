@@ -1,10 +1,10 @@
 package com.sparta.tigercave.dto;
 
+import com.sparta.tigercave.entity.Comment;
 import com.sparta.tigercave.entity.Post;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PostResponseDto {
         this.modifiedAt = post.getModifiedAt();
         this.id = post.getId();
         this.title = post.getTitle();
-        this.username = post.getUser().getUsername();
+        this.username = post.getUsers().getUsername();
         this.contents = post.getContents();
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();

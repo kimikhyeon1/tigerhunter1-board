@@ -1,7 +1,7 @@
 package com.sparta.tigercave.service;
 
 import com.sparta.tigercave.dto.UserDto;
-import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,6 @@ public class UsersService {
     @Transactional
     public void signUp(UserDto.signUpDto signUpDto, UserRoleEnum role) throws SQLIntegrityConstraintViolationException {
         String password = passwordEncoder.encode(signUpDto.getPassword());
-        userRepository.save(new User(signUpDto.getUsername(), password, role));
+        userRepository.save(new Users(signUpDto.getUsername(), password, role));
     }
 }

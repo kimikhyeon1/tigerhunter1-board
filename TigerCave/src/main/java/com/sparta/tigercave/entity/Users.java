@@ -11,9 +11,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @Entity
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
-public class User extends Timestamped{
+public class Users extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +25,7 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-    public User(String username, String password, UserRoleEnum role) throws SQLIntegrityConstraintViolationException {
+    public Users(String username, String password, UserRoleEnum role) throws SQLIntegrityConstraintViolationException {
         this.username = username;
         this.password = password;
         this.role = role;

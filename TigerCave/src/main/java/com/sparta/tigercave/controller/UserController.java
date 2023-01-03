@@ -1,7 +1,7 @@
 package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.UserDto;
-import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.repository.UserRepository;
 import com.sparta.tigercave.service.UsersService;
@@ -33,7 +33,7 @@ public class UserController {
         }
 
         //이미 존재한 user인지 확인
-        Optional<User> check_result = userRepository.findByUsername(signUpDto.getUsername());
+        Optional<Users> check_result = userRepository.findByUsername(signUpDto.getUsername());
         check_result.ifPresent(m -> {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });
