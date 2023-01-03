@@ -1,8 +1,10 @@
 package com.sparta.tigercave.jwt;
 
 
+import com.sparta.tigercave.dto.AuthenticatedUserInfoDto;
 import com.sparta.tigercave.entity.UsersRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
+import com.sparta.tigercave.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -93,5 +95,16 @@ public class JwtUtil {
     public Authentication createAuthentication(String username){
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    public AuthenticatedUserInfoDto validateAndGetUserInfo(String token) {
+        if (this.validateToken(token)) {
+            Claims claims = this.getUserInfoFromToken(token);
+            String username = claims.getSubject();
+            UsersRoleEnum role = UsersRoleEnum.valueOf(claims.get("auth").toString());
+            return new AuthenticatedUserInfoDto(role, username);
+        } else {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
     }
 }
