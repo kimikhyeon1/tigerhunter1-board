@@ -1,0 +1,135 @@
+Index: TigerCave/src/main/java/com/sparta/tigercave/entity/Comment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.entity;\r\n\r\nimport com.sparta.tigercave.dto.CommentRequestDto;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\n\r\nimport javax.persistence.*;\r\n\r\n@Getter\r\n@Entity\r\n@NoArgsConstructor\r\npublic class Comment {\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    Long id;\r\n\r\n    // FK(외래키)로 post_id를 갖습니다.\r\n    @ManyToOne\r\n    @JoinColumn(name =\"post_id\")\r\n    Post post;\r\n\r\n//    FK(외래키)로 user_id를 갖습니다.\r\n//    @ManyToOne\r\n//    @JoinColumn(name =\"user_id\")\r\n//    User user;\r\n//    @Column\r\n//    String username;\r\n    @Column\r\n    String comment;\r\n    // 댓글의 좋아요는 0부터 시작\r\n    @Column\r\n    Long comment_likes = 0L;\r\n\r\n    public Comment(Post post, CommentRequestDto commentRequestDto) {\r\n        this.comment = commentRequestDto.getComment();\r\n        this.post = post;\r\n    }\r\n\r\n    public void update(CommentRequestDto commentRequestDto) {\r\n        this.comment = commentRequestDto.getComment();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/entity/Comment.java b/TigerCave/src/main/java/com/sparta/tigercave/entity/Comment.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/entity/Comment.java	(revision 3c2d226b015bf9598ba8ea0b41193fafd8a85760)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/entity/Comment.java	(date 1672641593064)
+@@ -14,10 +14,10 @@
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     Long id;
+ 
+-    // FK(외래키)로 post_id를 갖습니다.
+-    @ManyToOne
+-    @JoinColumn(name ="post_id")
+-    Post post;
++//    // FK(외래키)로 post_id를 갖습니다.
++//    @ManyToOne
++//    @JoinColumn(name ="post_id")
++//    Post post;
+ 
+ //    FK(외래키)로 user_id를 갖습니다.
+ //    @ManyToOne
+@@ -31,10 +31,14 @@
+     @Column
+     Long comment_likes = 0L;
+ 
+-    public Comment(Post post, CommentRequestDto commentRequestDto) {
++    public Comment(CommentRequestDto commentRequestDto) {
+         this.comment = commentRequestDto.getComment();
+-        this.post = post;
+     }
++
++//    public Comment(Post post, CommentRequestDto commentRequestDto) {
++//        this.comment = commentRequestDto.getComment();
++//        this.post = post;
++//    }
+ 
+     public void update(CommentRequestDto commentRequestDto) {
+         this.comment = commentRequestDto.getComment();
+Index: TigerCave/src/main/java/com/sparta/tigercave/controller/CommentConrtoller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.controller;\r\n\r\n\r\nimport com.sparta.tigercave.dto.CommentRequestDto;\r\nimport com.sparta.tigercave.dto.CommentResponseDto;\r\nimport com.sparta.tigercave.service.CommentService;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/post\")\r\n@RequiredArgsConstructor\r\npublic class CommentConrtoller {\r\n    private final CommentService commentService;\r\n\r\n    // 댓글 작성하기\r\n    @PostMapping(\"/{post_id}/comment\")\r\n    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto) {\r\n        return commentService.createComment(post_id, commentRequestDto);\r\n    }\r\n\r\n    // 댓글 수정하기\r\n    @PutMapping(\"/comment/{comment_id}\")\r\n    public CommentResponseDto updateCommment(@PathVariable Long comment_id, @RequestBody CommentRequestDto commentRequestDto) {\r\n        return commentService.updateComment(comment_id, commentRequestDto);\r\n    }\r\n\r\n    // 댓글 삭제하기\r\n    @DeleteMapping(\"comment/{comment_id}\")\r\n    public ResponseEntity deleteComment(@PathVariable Long comment_id) {\r\n        return commentService.deleteComment(comment_id);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentConrtoller.java b/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentConrtoller.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentConrtoller.java	(revision 3c2d226b015bf9598ba8ea0b41193fafd8a85760)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentConrtoller.java	(date 1672642973991)
+@@ -13,11 +13,16 @@
+ @RequiredArgsConstructor
+ public class CommentConrtoller {
+     private final CommentService commentService;
++//
++//    // 댓글 작성하기
++//    @PostMapping("/{post_id}/comment")
++//    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto) {
++//        return commentService.createComment(post_id, commentRequestDto);
++//    }
+ 
+-    // 댓글 작성하기
+-    @PostMapping("/{post_id}/comment")
+-    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto) {
+-        return commentService.createComment(post_id, commentRequestDto);
++    @PostMapping("/comment")
++    public CommentResponseDto createComment(@RequestBody CommentRequestDto commentRequestDto) {
++        return commentService.createComment(commentRequestDto);
+     }
+ 
+     // 댓글 수정하기
+Index: TigerCave/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'java'\r\n    id 'org.springframework.boot' version '2.7.7'\r\n    id 'io.spring.dependency-management' version '1.0.15.RELEASE'\r\n}\r\n\r\ngroup = 'com.sparta'\r\nversion = '0.0.1-SNAPSHOT'\r\nsourceCompatibility = '17'\r\n\r\nconfigurations {\r\n    compileOnly {\r\n        extendsFrom annotationProcessor\r\n    }\r\n}\r\n\r\nrepositories {\r\n    mavenCentral()\r\n}\r\n\r\ndependencies {\r\n    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'\r\n    implementation 'org.springframework.boot:spring-boot-starter-security'\r\n    implementation 'org.springframework.boot:spring-boot-starter-web'\r\n    compileOnly 'org.projectlombok:lombok'\r\n    runtimeOnly 'com.h2database:h2'\r\n    annotationProcessor 'org.projectlombok:lombok'\r\n    testImplementation 'org.springframework.boot:spring-boot-starter-test'\r\n    testImplementation 'org.springframework.security:spring-security-test'\r\n\r\n    implementation group: 'org.json', name: 'json', version: '20220924'\r\n\r\n    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'\r\n    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'\r\n    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'\r\n\r\n    developmentOnly 'org.springframework.boot:spring-boot-devtools'}\r\n\r\ntasks.named('test') {\r\n    useJUnitPlatform()\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/build.gradle b/TigerCave/build.gradle
+--- a/TigerCave/build.gradle	(revision 3c2d226b015bf9598ba8ea0b41193fafd8a85760)
++++ b/TigerCave/build.gradle	(date 1672642973961)
+@@ -20,13 +20,13 @@
+ 
+ dependencies {
+     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+-    implementation 'org.springframework.boot:spring-boot-starter-security'
++//    implementation 'org.springframework.boot:spring-boot-starter-security'
+     implementation 'org.springframework.boot:spring-boot-starter-web'
+     compileOnly 'org.projectlombok:lombok'
+     runtimeOnly 'com.h2database:h2'
+     annotationProcessor 'org.projectlombok:lombok'
+     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+-    testImplementation 'org.springframework.security:spring-security-test'
++//    testImplementation 'org.springframework.security:spring-security-test'
+ 
+     implementation group: 'org.json', name: 'json', version: '20220924'
+ 
+Index: TigerCave/src/main/java/com/sparta/tigercave/service/CommentService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.service;\r\n\r\nimport com.sparta.tigercave.dto.CommentRequestDto;\r\nimport com.sparta.tigercave.dto.CommentResponseDto;\r\nimport com.sparta.tigercave.entity.Comment;\r\nimport com.sparta.tigercave.entity.Post;\r\nimport com.sparta.tigercave.repository.CommentRepository;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport javax.transaction.Transactional;\r\n\r\n@Service\r\n@RequiredArgsConstructor\r\npublic class CommentService {\r\n\r\n    private final CommentRepository commentRepository;\r\n\r\n    // 댓글 작성하기\r\n    @Transactional\r\n    public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto) {\r\n        Post post = postRepository.findById(id).orElseThrow(\r\n                () -> new IllegalArgumentException(\"게시글이 존재하지 않습니다.\")\r\n        );\r\n        Comment comment = commentRepository.saveAndFlush(new Comment(post, commentRequestDto));\r\n        return new CommentResponseDto(comment);\r\n    }\r\n\r\n    // 댓글 수정하기\r\n    public CommentResponseDto updateComment(Long id, CommentRequestDto commentRequestDto) {\r\n        Comment comment = commentRepository.findById(id).orElseThrow(\r\n                () -> new IllegalArgumentException(\"댓글이 존재하지 않습니다.\")\r\n        );\r\n        comment.update(commentRequestDto);\r\n        return new CommentResponseDto(comment);\r\n    }\r\n\r\n    // 댓글 삭제하기\r\n    public ResponseEntity deleteComment(Long id) {\r\n        commentRepository.findById(id).orElseThrow(\r\n                () -> new IllegalArgumentException(\"댓글이 존재하지 않습니다.\")\r\n        );\r\n        commentRepository.deleteById(id);\r\n        return new ResponseEntity(\"댓글이 삭제되었습니다.\", HttpStatus.OK);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/service/CommentService.java b/TigerCave/src/main/java/com/sparta/tigercave/service/CommentService.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/service/CommentService.java	(revision 3c2d226b015bf9598ba8ea0b41193fafd8a85760)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/service/CommentService.java	(date 1672641593008)
+@@ -18,13 +18,19 @@
+ 
+     private final CommentRepository commentRepository;
+ 
+-    // 댓글 작성하기
++//    // 댓글 작성하기
++//    @Transactional
++//    public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto) {
++//        Post post = postRepository.findById(id).orElseThrow(
++//                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
++//        );
++//        Comment comment = commentRepository.saveAndFlush(new Comment(post, commentRequestDto));
++//        return new CommentResponseDto(comment);
++//    }
++
+     @Transactional
+-    public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto) {
+-        Post post = postRepository.findById(id).orElseThrow(
+-                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+-        );
+-        Comment comment = commentRepository.saveAndFlush(new Comment(post, commentRequestDto));
++    public CommentResponseDto createComment(CommentRequestDto commentRequestDto) {
++        Comment comment = commentRepository.saveAndFlush(new Comment(commentRequestDto));
+         return new CommentResponseDto(comment);
+     }
+ 
