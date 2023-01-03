@@ -1,0 +1,437 @@
+Index: TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.entity;\r\n\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\n\r\nimport javax.persistence.*;\r\nimport java.math.BigInteger;\r\n\r\n@Entity\r\n@NoArgsConstructor\r\n@Getter\r\npublic class Users{\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.AUTO)\r\n    private BigInteger user_id;\r\n    @Column(nullable = false)\r\n    private String username;\r\n    @Column(nullable = false)\r\n    private String password;\r\n    @Column(nullable = false)\r\n    @Enumerated(EnumType.STRING)\r\n    private UsersRoleEnum role;\r\n\r\n    public Users(String username, String password, UsersRoleEnum role){\r\n        this.username = username;\r\n        this.password = password;\r\n        this.role = role;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java b/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java	(date 1672723529368)
+@@ -2,9 +2,11 @@
+ 
+ import lombok.Getter;
+ import lombok.NoArgsConstructor;
++import org.hibernate.id.IdentifierGenerationException;
+ 
+ import javax.persistence.*;
+ import java.math.BigInteger;
++import java.sql.SQLIntegrityConstraintViolationException;
+ 
+ @Entity
+ @NoArgsConstructor
+Index: TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.jwt;\r\n\r\nimport com.sparta.tigercave.entity.UsersRoleEnum;\r\nimport com.sparta.tigercave.exception.CustomException;\r\nimport io.jsonwebtoken.Claims;\r\nimport io.jsonwebtoken.Jws;\r\nimport io.jsonwebtoken.Jwts;\r\nimport io.jsonwebtoken.SignatureAlgorithm;\r\nimport io.jsonwebtoken.security.Keys;\r\nimport lombok.RequiredArgsConstructor;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.apache.tomcat.util.http.parser.Authorization;\r\nimport org.springframework.beans.factory.annotation.Value;\r\nimport org.springframework.security.authentication.UsernamePasswordAuthenticationToken;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.util.StringUtils;\r\n\r\nimport javax.annotation.PostConstruct;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport java.security.Key;\r\nimport java.util.Base64;\r\nimport java.util.Date;\r\n\r\nimport static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;\r\n\r\n@Slf4j              // SLF4J는 Java의 로깅 모듈들의 추상체 -> 로그를 찍어주기 위함\r\n@Component          //개발자가 직접 작성한 class를 bean으로 등록하려고 할때 사용하는 어노테이션\r\n@RequiredArgsConstructor\r\npublic class JwtUtil {\r\n\r\n    private final UserDetailsService userDetailsService;\r\n\r\n    @Value(\"${jwt.response.header}\")\r\n    public static final String AUTHORIZATION_HEADER = \"Authorization\";\r\n    @Value(\"${jwt.token.prefix}\")\r\n    private static final String BEARER_PREFIX = \"Bearer \";\r\n    @Value(\"${jwt.secret.key}\")\r\n    private String secretKey;\r\n    private static final long TOKEN_TIME = 60 * 60 * 1000L;\r\n\r\n    private Key key;\r\n\r\n    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;\r\n\r\n    //객체 초기화, secretKey를 Base64로 인코딩한다.\r\n    @PostConstruct\r\n    protected void init(){\r\n        byte[] bytes = Base64.getDecoder().decode(secretKey);\r\n        key = Keys.hmacShaKeyFor(bytes);\r\n    }\r\n\r\n    //JWT토큰 생성\r\n    public String createToken(String username, UsersRoleEnum role){\r\n\r\n        Claims claims = Jwts.claims().setSubject(username);\r\n\r\n        //jwt payload에 저장되는 정보 단위, 보통 여기서 user를 식별하는 값을 넣는다.\r\n        claims.put(\"role\", role);   //ket/value 값으로 저장됨\r\n        Date now = new Date();\r\n        return BEARER_PREFIX+\r\n                Jwts.builder()\r\n                .setClaims(claims)  //정보저장\r\n                .setIssuedAt(now)   //토큰 발행 시간 정보\r\n                .setExpiration(new Date(now.getTime() + TOKEN_TIME))    //토큰 만료 시간\r\n                .signWith(signatureAlgorithm, key)    //사용할 암호화 알고리즘과 signature에 들어갈 secret값 세팅\r\n                .compact();     //토큰 생성\r\n    }\r\n\r\n    //JWT토큰 유효성 검사 , 만료일자 확인\r\n    public boolean validateToken(String token){\r\n        try{\r\n            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);\r\n            return true;\r\n        }catch (Exception e){\r\n            new CustomException(INVALID_TOKEN);\r\n        }\r\n        return false;\r\n    }\r\n\r\n    //header 토큰 가져오기\r\n    public String resolveToken(HttpServletRequest request){\r\n        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);\r\n        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {\r\n            return bearerToken.substring(7);\r\n        }\r\n        return null;\r\n    }\r\n\r\n    //토큰에서 회원정보 추출\r\n    public Claims getUserFromToken(String token){\r\n        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();\r\n    }\r\n\r\n    //인증객체 생성\r\n    public Authentication createAuthentication(String username){\r\n        UserDetails userDetails = userDetailsService.loadUserByUsername(username);\r\n        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java b/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java	(date 1672724504232)
+@@ -1,15 +1,14 @@
+ package com.sparta.tigercave.jwt;
+ 
++
+ import com.sparta.tigercave.entity.UsersRoleEnum;
+ import com.sparta.tigercave.exception.CustomException;
+ import io.jsonwebtoken.Claims;
+-import io.jsonwebtoken.Jws;
+ import io.jsonwebtoken.Jwts;
+ import io.jsonwebtoken.SignatureAlgorithm;
+ import io.jsonwebtoken.security.Keys;
+ import lombok.RequiredArgsConstructor;
+ import lombok.extern.slf4j.Slf4j;
+-import org.apache.tomcat.util.http.parser.Authorization;
+ import org.springframework.beans.factory.annotation.Value;
+ import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+ import org.springframework.security.core.Authentication;
+@@ -17,7 +16,6 @@
+ import org.springframework.security.core.userdetails.UserDetailsService;
+ import org.springframework.stereotype.Component;
+ import org.springframework.util.StringUtils;
+-
+ import javax.annotation.PostConstruct;
+ import javax.servlet.http.HttpServletRequest;
+ import java.security.Key;
+@@ -42,12 +40,10 @@
+     private static final long TOKEN_TIME = 60 * 60 * 1000L;
+ 
+     private Key key;
+-
+     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+ 
+-    //객체 초기화, secretKey를 Base64로 인코딩한다.
+     @PostConstruct
+-    protected void init(){
++    public void init() {
+         byte[] bytes = Base64.getDecoder().decode(secretKey);
+         key = Keys.hmacShaKeyFor(bytes);
+     }
+@@ -70,16 +66,21 @@
+     }
+ 
+     //JWT토큰 유효성 검사 , 만료일자 확인
+-    public boolean validateToken(String token){
+-        try{
++    public boolean validateToken(String token) {
++        try {
+             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+             return true;
+-        }catch (Exception e){
++        } catch (Exception e) {
+             new CustomException(INVALID_TOKEN);
+         }
+         return false;
+     }
+ 
++    // 토큰에서 사용자 정보 가져오기
++    public Claims getUserInfoFromToken(String token) {
++        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
++    }
++
+     //header 토큰 가져오기
+     public String resolveToken(HttpServletRequest request){
+         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+@@ -99,4 +100,4 @@
+         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+     }
+-}
++}
+\ No newline at end of file
+Index: TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.security;\r\n\r\nimport com.sparta.tigercave.entity.Users;\r\nimport com.sparta.tigercave.exception.CustomException;\r\nimport com.sparta.tigercave.repository.UsersRepository;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.core.userdetails.UsernameNotFoundException;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport static com.sparta.tigercave.exception.ErrorCode.USER_NOT_FOUND;\r\n\r\n@Service\r\n@RequiredArgsConstructor\r\npublic class UserDetailServiceImpl implements UserDetailsService {\r\n    private final UsersRepository usersRepository;\r\n\r\n    @Override\r\n    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {\r\n        Users users = usersRepository.findByUsername(username).orElseThrow(() ->\r\n                new CustomException(USER_NOT_FOUND));\r\n        return new UserDetailImpl(users, users.getUsername(), users.getPassword());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailServiceImpl.java b/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailServiceImpl.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailServiceImpl.java	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailServiceImpl.java	(date 1672723867855)
+@@ -8,7 +8,6 @@
+ import org.springframework.security.core.userdetails.UserDetailsService;
+ import org.springframework.security.core.userdetails.UsernameNotFoundException;
+ import org.springframework.stereotype.Service;
+-
+ import static com.sparta.tigercave.exception.ErrorCode.USER_NOT_FOUND;
+ 
+ @Service
+@@ -18,6 +17,7 @@
+ 
+     @Override
+     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
++
+         Users users = usersRepository.findByUsername(username).orElseThrow(() ->
+                 new CustomException(USER_NOT_FOUND));
+         return new UserDetailImpl(users, users.getUsername(), users.getPassword());
+Index: TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.security;\r\n\r\nimport com.sparta.tigercave.entity.Users;\r\nimport com.sparta.tigercave.entity.UsersRoleEnum;\r\nimport org.springframework.security.core.GrantedAuthority;\r\nimport org.springframework.security.core.authority.SimpleGrantedAuthority;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Collection;\r\n\r\npublic class UserDetailImpl implements UserDetails {\r\n\r\n    private final Users users;\r\n\r\n    private final String username;\r\n    private final String password;\r\n\r\n    public UserDetailImpl(Users users, String username, String password){\r\n        this.users = users;\r\n        this.username = username;\r\n        this.password = password;\r\n    }\r\n\r\n    public Users users(){\r\n        return users;\r\n    }\r\n\r\n    @Override\r\n    public Collection<? extends GrantedAuthority> getAuthorities(){\r\n        UsersRoleEnum roleEnum = users.getRole();\r\n        String authority = roleEnum.getAuthority();\r\n\r\n        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);\r\n        Collection<GrantedAuthority> authorities = new ArrayList<>();\r\n        authorities.add(simpleGrantedAuthority);\r\n\r\n        return authorities;\r\n    }\r\n\r\n    @Override\r\n    public String getPassword() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public String getUsername() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public boolean isAccountNonExpired() {\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean isAccountNonLocked() {\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean isCredentialsNonExpired() {\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean isEnabled() {\r\n        return false;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java b/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java	(date 1672724429485)
+@@ -14,6 +14,7 @@
+     private final Users users;
+ 
+     private final String username;
++
+     private final String password;
+ 
+     public UserDetailImpl(Users users, String username, String password){
+@@ -31,22 +32,23 @@
+         UsersRoleEnum roleEnum = users.getRole();
+         String authority = roleEnum.getAuthority();
+ 
++
+         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
+         Collection<GrantedAuthority> authorities = new ArrayList<>();
+         authorities.add(simpleGrantedAuthority);
+ 
+         return authorities;
+     }
+-
+     @Override
+     public String getPassword() {
+-        return null;
++        return this.password;
+     }
+ 
+     @Override
+     public String getUsername() {
+-        return null;
++        return this.username;
+     }
++
+ 
+     @Override
+     public boolean isAccountNonExpired() {
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"424b7fda-2238-4613-ba3f-a1e1b9c8f02a\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/.gitignore\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/.gitignore\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UsersController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UsersController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Timestamped.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Timestamped.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/Users.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/ErrorCode.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/ErrorCode.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/repository/UsersRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/repository/UsersRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/Security.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/TigerCave/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/TigerCave/src/main/resources/application.properties\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$\">\r\n      <ProjectState />\r\n    </projectState>\r\n    <projectState path=\"$PROJECT_DIR$/TigerCave\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <task path=\"$PROJECT_DIR$/TigerCave\">\r\n          <activation />\r\n        </task>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand />\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GithubDefaultAccount\">\r\n    <option name=\"defaultAccountId\" value=\"234f062d-3598-41ff-9d72-ac5126242401\" />\r\n  </component>\r\n  <component name=\"JpbToolWindowState\">\r\n    <option name=\"isToolWindowVisible\" value=\"false\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Jkbs50mtFSzG19QguflpHqtKLn\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RequestMappingsPanelOrder0\": \"0\",\r\n    \"RequestMappingsPanelOrder1\": \"1\",\r\n    \"RequestMappingsPanelWidth0\": \"75\",\r\n    \"RequestMappingsPanelWidth1\": \"75\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"jdk.selected.JAVA_MODULE\": \"azul-17\",\r\n    \"last_opened_file_path\": \"C:/Users/beleif/Desktop/IdeaProjects/board\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.15\",\r\n    \"project.structure.side.proportion\": \"0.2\",\r\n    \"settings.editor.selected.configurable\": \"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\",\r\n    \"spring.configuration.checksum\": \"518d29472d81a45f7e69d3ac3f81d8df\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\beleif\\Desktop\\IdeaProjects\\tigerhunter1-board\\TigerCave\\src\\main\\resources\" />\r\n      <recent name=\"C:\\Users\\beleif\\Desktop\\IdeaProjects\\tigerhunter1-board\\TigerCave\\src\\main\\java\\com\\sparta\\tigercave\\entity\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.sparta.tigercave.service\" />\r\n      <recent name=\"com.sparta.tigercave.repository\" />\r\n      <recent name=\"com.sparta.tigercave.dto\" />\r\n      <recent name=\"com.sparta.tigercave.controller\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration default=\"true\" type=\"JetRunConfigurationType\">\r\n      <module name=\"tigerhunter1-board\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"KotlinStandaloneScriptRunConfigurationType\">\r\n      <module name=\"tigerhunter1-board\" />\r\n      <option name=\"filePath\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"TigerCaveApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\r\n      <module name=\"TigerCave.main\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.sparta.tigercave.TigerCaveApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"424b7fda-2238-4613-ba3f-a1e1b9c8f02a\" name=\"Changes\" comment=\"\" />\r\n      <created>1672625231815</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1672625231815</updated>\r\n      <workItem from=\"1672625233010\" duration=\"118000\" />\r\n      <workItem from=\"1672625402505\" duration=\"42000\" />\r\n      <workItem from=\"1672625477895\" duration=\"22508000\" />\r\n      <workItem from=\"1672674453454\" duration=\"512000\" />\r\n      <workItem from=\"1672704506644\" duration=\"11842000\" />\r\n      <workItem from=\"1672716413096\" duration=\"1324000\" />\r\n      <workItem from=\"1672717779849\" duration=\"1561000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/.idea/workspace.xml	(date 1672723457392)
+@@ -4,6 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
++<<<<<<< HEAD
+     <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="">
+       <change afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java" afterDir="false" />
+       <change afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" afterDir="false" />
+@@ -17,6 +18,11 @@
+       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/Security.java" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/UsersService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application.properties" afterDir="false" />
++=======
++    <list default="true" id="d71caf9a-d0e2-4140-b882-e28ad6675512" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++>>>>>>> origin/develop
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -24,13 +30,17 @@
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+   <component name="ExternalProjectsData">
++<<<<<<< HEAD
+     <projectState path="$PROJECT_DIR$">
+       <ProjectState />
+     </projectState>
++=======
++>>>>>>> origin/develop
+     <projectState path="$PROJECT_DIR$/TigerCave">
+       <ProjectState />
+     </projectState>
+   </component>
++<<<<<<< HEAD
+   <component name="ExternalProjectsManager">
+     <system id="GRADLE">
+       <state>
+@@ -66,10 +76,25 @@
+     <option name="stateVersion" value="1" />
+   </component>
+   <component name="ProjectId" id="2Jkbs50mtFSzG19QguflpHqtKLn" />
++=======
++  <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="develop" />
++      </map>
++    </option>
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++  </component>
++  <component name="MarkdownSettingsMigration">
++    <option name="stateVersion" value="1" />
++  </component>
++  <component name="ProjectId" id="2Jl74MrXfVNvtC0voE1c138i9uH" />
++>>>>>>> origin/develop
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
++<<<<<<< HEAD
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
+     "RequestMappingsPanelOrder0": "0",
+@@ -119,6 +144,51 @@
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
++=======
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
++    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
++    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
++    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/tigerhunter1-board/TigerCave&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
++    &quot;spring.configuration.checksum&quot;: &quot;518d29472d81a45f7e69d3ac3f81d8df&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  }
++}</component>
++  <component name="RunManager" selected="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]">
++    <configuration name="C:/tigerhunter1-board/TigerCave [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/TigerCave" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value="dependencies" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <method v="2" />
++>>>>>>> origin/develop
+     </configuration>
+     <configuration name="TigerCaveApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+       <module name="TigerCave.main" />
+@@ -127,10 +197,21 @@
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
++<<<<<<< HEAD
++=======
++    <recent_temporary>
++      <list>
++        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
++        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
++        <item itemvalue="Gradle.C:/tigerhunter1-board/TigerCave [dependencies]" />
++      </list>
++    </recent_temporary>
++>>>>>>> origin/develop
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
++<<<<<<< HEAD
+       <changelist id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="" />
+       <created>1672625231815</created>
+       <option name="number" value="Default" />
+@@ -143,6 +224,21 @@
+       <workItem from="1672704506644" duration="11842000" />
+       <workItem from="1672716413096" duration="1324000" />
+       <workItem from="1672717779849" duration="1561000" />
++=======
++      <changelist id="d71caf9a-d0e2-4140-b882-e28ad6675512" name="Changes" comment="" />
++      <created>1672640623980</created>
++      <option name="number" value="Default" />
++      <option name="presentableId" value="Default" />
++      <updated>1672640623980</updated>
++      <workItem from="1672640628398" duration="1818000" />
++      <workItem from="1672642537166" duration="267000" />
++      <workItem from="1672642857631" duration="480000" />
++      <workItem from="1672643522970" duration="32000" />
++      <workItem from="1672643958336" duration="2714000" />
++      <workItem from="1672704726149" duration="173000" />
++      <workItem from="1672704917593" duration="62000" />
++      <workItem from="1672705014684" duration="20000" />
++>>>>>>> origin/develop
+     </task>
+     <servers />
+   </component>
+Index: TigerCave/.idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"FrameworkDetectionExcludesConfiguration\">\r\n    <file type=\"web\" url=\"file://$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" project-jdk-name=\"17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"jpab\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/.idea/misc.xml b/TigerCave/.idea/misc.xml
+--- a/TigerCave/.idea/misc.xml	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/.idea/misc.xml	(date 1672723457393)
+@@ -4,7 +4,7 @@
+   <component name="FrameworkDetectionExcludesConfiguration">
+     <file type="web" url="file://$PROJECT_DIR$" />
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="17" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+   <component name="ProjectType">
+Index: TigerCave/.idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile name=\"Gradle Imported\" enabled=\"true\">\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <processorPath useClasspath=\"false\">\r\n          <entry name=\"$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar\" />\r\n        </processorPath>\r\n        <module name=\"TigerCave.main\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel target=\"17\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/.idea/compiler.xml b/TigerCave/.idea/compiler.xml
+--- a/TigerCave/.idea/compiler.xml	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/.idea/compiler.xml	(date 1672723457392)
+@@ -2,6 +2,7 @@
+ <project version="4">
+   <component name="CompilerConfiguration">
+     <annotationProcessing>
++      <profile default="true" name="Default" enabled="true" />
+       <profile name="Gradle Imported" enabled="true">
+         <outputRelativeToContentRoot value="true" />
+         <processorPath useClasspath="false">
+Index: TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.sparta.tigercave.exception;\r\n\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.ExceptionHandler;\r\nimport org.springframework.web.bind.annotation.RestControllerAdvice;\r\nimport org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;\r\n\r\n//로깅 : 프로그램 동작시 발생하는 모든 일을 기록하는 것 (서비스 동작 상태, 장애)\r\n//@Slf4j : 로깅 구현을 위해 추가\r\n//@RestControllerAdvice : 모든 rest controller에서 발생하는 exception 처리\r\n@Slf4j\r\n@RestControllerAdvice\r\npublic class GlobalExceptionHandler extends ResponseEntityExceptionHandler {\r\n\r\n    //@ExceptionHandler : 발생한 exception에 대해 처리하는 메소드로 handling\r\n    //메소드에 선언해 예외 처리를 하려는 클래스럴 지정하면, 예외 발생 시 정의된 로직으로 처리\r\n    //런타임시 발생되는 모든 예외는 CustomException으로 처리\r\n    @ExceptionHandler({ CustomException.class })\r\n    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {\r\n        log.error(\"handleCustomException\", e.getErrorCode());\r\n        return ErrorResponse.toResponseEntity(e.getErrorCode());\r\n    }\r\n\r\n    //서버에러 별도 처리\r\n    @ExceptionHandler({ Exception.class })\r\n    protected ResponseEntity<ErrorResponse> handleServerException(CustomException e) {\r\n        log.error(\"handleServerException\", e.getErrorCode());\r\n        return ErrorResponse.toResponseEntity(e.getErrorCode());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java b/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java
+--- a/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java	(date 1672723457402)
+@@ -6,6 +6,8 @@
+ import org.springframework.web.bind.annotation.RestControllerAdvice;
+ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+ 
++import static com.sparta.tigercave.exception.ErrorCode.SERVER_ERROR;
++
+ //로깅 : 프로그램 동작시 발생하는 모든 일을 기록하는 것 (서비스 동작 상태, 장애)
+ //@Slf4j : 로깅 구현을 위해 추가
+ //@RestControllerAdvice : 모든 rest controller에서 발생하는 exception 처리
+@@ -24,8 +26,8 @@
+ 
+     //서버에러 별도 처리
+     @ExceptionHandler({ Exception.class })
+-    protected ResponseEntity<ErrorResponse> handleServerException(CustomException e) {
+-        log.error("handleServerException", e.getErrorCode());
+-        return ErrorResponse.toResponseEntity(e.getErrorCode());
++    protected ResponseEntity<ErrorResponse> handleServerException() {
++        log.error("handleServerException", SERVER_ERROR);
++        return ErrorResponse.toResponseEntity(SERVER_ERROR);
+     }
+ }
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"azul-17\" project-jdk-type=\"JavaSDK\" />\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"jpab\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 02776a0790565c922a4bcde2b33cc08d04b8ea0b)
++++ b/.idea/misc.xml	(date 1672723457390)
+@@ -1,6 +1,14 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++<<<<<<< HEAD
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="azul-17" project-jdk-type="JavaSDK" />
++=======
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$/TigerCave" />
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK" />
++>>>>>>> origin/develop
+   <component name="ProjectType">
+     <option name="id" value="jpab" />
+   </component>
