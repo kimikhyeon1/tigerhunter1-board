@@ -46,8 +46,11 @@ public class CommentService {
         // 토큰에서 가져온 사용자 정보를 사용하여 Users객체 가져오기
         Users user = usersRepository.findByUsername(claims.getSubject()).get();
 
+        // DB에 댓글을 저장하기
         Comment comment = commentRepository.saveAndFlush(new Comment(user, post, commentRequestDto));
-        return new CommentResponseDto(comment);
+
+        // DB에서 저장 된 댓글을 조회하여 반환하기
+        return new CommentResponseDto(commentRepository.findById(comment.getId()).get());
     }
 
     @Transactional
@@ -72,7 +75,8 @@ public class CommentService {
             throw new CustomException(INVALID_USER); // 작성자와 유저가 일치하지 않을 때
         }
         comment.update(commentRequestDto);
-        return new CommentResponseDto(comment);
+        // DB에서 저장 된 댓글을 조회하여 반환하기
+        return new CommentResponseDto(commentRepository.findById(comment.getId()).get());
     }
 
     @Transactional
