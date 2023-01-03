@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,15 +35,21 @@ public class PostController {
         return new ModelAndView();
     }
 
-    @PostMapping("/posts")
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
+//    @PostMapping("/posts")
+//    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request) {
+//        String token = jwtUtil.resolveToken(request);
+//
+//        if (token == null) {
+//            throw new CustomException(INVALID_TOKEN);
+//        }
+//        AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
+//        return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
+//    }
 
-        if (token == null) {
-            throw new CustomException(INVALID_TOKEN);
-        }
-        AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-        return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
+    @PostMapping("/posts")
+    public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
+        return postService.createPost(postRequestDto, userDetails);
     }
 
 
@@ -50,14 +58,14 @@ public class PostController {
         return postService.getPostById(id);
     }
 
-    @GetMapping("/posts")
-    public List<PostResponseDto> getAllPostsOrGetpostByUsername(@RequestBody(required = false) UserNameRequestDto requestDto) {
-        if (requestDto == null) {
-            return postService.getAllPosts();
-        } else {
-            return postService.getPostByUsername(requestDto);
-        }
-    }
+//    @GetMapping("/posts")
+//    public List<PostResponseDto> getAllPostsOrGetpostByUsername(@RequestBody(required = false) UserNameRequestDto requestDto) {
+//        if (requestDto == null) {
+//            return postService.getAllPosts();
+//        } else {
+//            return postService.getPostByUsername(requestDto);
+//        }
+//    }
 
     private boolean isAdmin(UsersRoleEnum usersRoleEnum) {
         return usersRoleEnum == UsersRoleEnum.ADMIN;
