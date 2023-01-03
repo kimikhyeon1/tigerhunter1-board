@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/TigerCave.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/TigerCave.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/TigerCave.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/TigerCave.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/TigerCave.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-01-02__4_06__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-01-03__3_23__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-01-03__3_23__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-01-03__3_24__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-01-03__3_24__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +42,15 @@
       </list>
     </option>
   </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="feature/login" />
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/login" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GithubDefaultAccount">
@@ -83,10 +83,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "configurable.group.build",
     "spring.configuration.checksum": "518d29472d81a45f7e69d3ac3f81d8df",
     "vue.rearranger.settings.migration": "true"
   }
@@ -113,13 +113,6 @@
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="tigerhunter1-board" />
       <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TigerCaveApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="TigerCave.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.tigercave.TigerCaveApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,5 +162,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix : jwtUtil 변수 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix : jwtUtil 변수 수정" />
   </component>
 </project>
