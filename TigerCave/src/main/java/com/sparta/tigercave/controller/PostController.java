@@ -25,7 +25,7 @@ public class PostController {
 
 
     //게시글 목록
-    @GetMapping("/api/post")
+    @GetMapping("/api/posts")
     public List<PostResponseDto> getPostList(){
         return postService.getPostList();
     }
@@ -37,9 +37,9 @@ public class PostController {
     }
 
     // 게시글 수정
-    @PutMapping("/api/post/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
-        return postService.updatePost(id, postRequestDto, userDetails);
+    @PutMapping("/api/post/{post_id}")
+    public PostResponseDto updatePost(@PathVariable Long post_id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        return postService.updatePost(post_id, postRequestDto, userDetails);
     }
     // 게시글 삭제
     @DeleteMapping("/api/post/{post_id}")
