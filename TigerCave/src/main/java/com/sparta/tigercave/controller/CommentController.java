@@ -33,5 +33,4 @@ public class CommentController {
     public ResponseEntity deleteComment(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetails userDetails) {
         return commentService.deleteComment(comment_id, userDetails.getUsername());
     }
-
 }

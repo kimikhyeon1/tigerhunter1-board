@@ -94,15 +94,4 @@ public class JwtUtil {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
-
-    public AuthenticatedUserInfoDto validateAndGetUserInfo(String token) {
-        if (this.validateToken(token)) {
-            Claims claims = this.getUserInfoFromToken(token);
-            String username = claims.getSubject();
-            UserRoleEnum role = UserRoleEnum.valueOf(claims.get("role").toString());
-            return new AuthenticatedUserInfoDto(role, username);
-        } else {
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
-        }
-    }
 }

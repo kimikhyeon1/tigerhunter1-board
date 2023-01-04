@@ -47,10 +47,4 @@ public class PostController {
         return postService.deletePost(post_id, userDetails);
     }
 
-    // 게시글 좋아요
-    @PostMapping("/api/post/{postId}/like")
-    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-        return postLikeService.addOrDeleteLike(postId,userDetails);
-    }
-
 }
