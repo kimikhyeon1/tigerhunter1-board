@@ -15,8 +15,6 @@ public enum ErrorCode {
     //400 BAD_REQUEST 잘못된 요청
     INVALID_TOKEN(BAD_REQUEST, "토큰이 유효하지 않습니다."),
     INVALID_USER(BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다."),
-    ALREADY_LIKE_USER(BAD_REQUEST, "이미 좋아요한 사용자입니다."),
-    NOT_YET_LIKE_USER(BAD_REQUEST, "아직 좋아요를 하지 않은 사용자입니다."),
 
     //401 UNAUTHORIZED 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다."),
