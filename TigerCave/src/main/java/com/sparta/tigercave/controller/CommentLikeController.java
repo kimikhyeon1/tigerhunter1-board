@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
+
 @RestController
 @RequestMapping("/api/post/comment")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class CommentLikeController {
     // 좋아요 추가
     @PostMapping("/{comment_id}/like")
     public ResponseEntity addLike(@RequestParam Long comment_id, @AuthenticationPrincipal UserDetailImpl userDetail) {
-        Boolean likeOpt = commentLikeService.addorDeleteLike(comment_id, userDetail.getUserId());
+        Boolean likeOpt = commentLikeService.addorDeleteLike(comment_id, BigInteger.valueOf(userDetail.getUserId()));
 
         // 좋아요 등록
         if (likeOpt) {

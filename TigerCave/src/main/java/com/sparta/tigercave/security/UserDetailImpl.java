@@ -14,12 +14,12 @@ public class UserDetailImpl implements UserDetails {
 
     private final User user;
 
-    private final BigInteger userId;
+    private final Long userId;
     private final String username;
 
     private final String password;
 
-    public UserDetailImpl(User user, String username){
+    public UserDetailImpl(User user, Long userId, String username, String password){
         this.user = user;
         this.userId = userId;
         this.username = username;
@@ -44,7 +44,7 @@ public class UserDetailImpl implements UserDetails {
         return authorities;
     }
 
-    public BigInteger getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 

@@ -10,6 +10,7 @@ import com.sparta.tigercave.security.UserDetailImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 
 @Transactional
@@ -24,7 +25,7 @@ public class PostLikeService {
     @Transactional
     public Long addLike(Long postId, UserDetailImpl userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("없는 게시물"));
-        User user = userRepository.findById(userDetails.getUserId()).get();
+        User user = userRepository.findById(BigInteger.valueOf(userDetails.getUserId())).get();
         List<PostLike> postLikes  = postLikeRepository.findByUserAndPost(user,post);
         if (postLikes.isEmpty()){
             postLikeRepository.save(new PostLike(post,user));

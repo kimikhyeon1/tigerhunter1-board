@@ -1,9 +1,10 @@
 package com.sparta.tigercave.entity;
 
 import com.sparta.tigercave.dto.PostRequestDto;
-import com.sparta.tigercave.dto.UpdateRequestDto;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class Post extends Timestamped{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
+    @Column
+    String username;
 
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -53,14 +56,12 @@ public class Post extends Timestamped{
         this.contents = postRequestDto.getContents();
     }
 
-    public void update(UpdateRequestDto requestDto) {
+    public void update(PostRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
 
-    public boolean isPostWriter(String username) {
-        return username.equals(this.getUser().getUsername());
-    }
+
 
 
 }

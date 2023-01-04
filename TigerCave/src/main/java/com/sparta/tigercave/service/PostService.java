@@ -8,6 +8,8 @@ import com.sparta.tigercave.repository.PostRepository;
 import com.sparta.tigercave.repository.UserRepository;
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.sparta.tigercave.entity.UserRoleEnum.ADMIN;
 import static com.sparta.tigercave.exception.ErrorCode.*;
 
 @Service
@@ -24,87 +27,57 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public PostResponseDto createPost(PostRequestDto requestDto, String username) {
-        User users = userRepository.findByUsername(username).orElseThrow(
-                () -> new CustomException(USER_NOT_FOUND)
-        );
-        Post post = new Post(requestDto, users);
-        postRepository.save(post);
-        return new PostResponseDto(post);
-    }
-
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getAllPosts() {
+    public List<PostResponseDto> getPostList() {
         List<Post> postList = postRepository.findAllByOrderByModifiedAtDesc();
         if(Collections.isEmpty(postList)) return null;
-        List<PostResponseDto> responseDtoList = postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
-        return responseDtoList;
+        List<PostResponseDto> postresponseDtoList = postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
+        return postresponseDtoList;
     }
-
-    @Transactional(readOnly = true)
-    public PostResponseDto getPostById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
-        );
-        return new PostResponseDto(post);
-    }
-
-//    @Transactional(readOnly = true)
-//    public List<PostResponseDto> getPostByUsername(UserNameRequestDto requestDto) {
-//        String username = requestDto.getUsername();
-//        List<Post> postList = postRepository.findByUserUsername(username);
-//        return postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
-//    }
-
 
     @Transactional
-    public PostResponseDto createPost(PostRequestDto postRequestDto, UserDetails userDetails) {
+    public PostResponseDto createPost(Long id, PostRequestDto postRequestDto, UserDetails userDetails) {
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
         User user = userRepository.findByUsername(userDetails.getUsername()).get();
 
-        // DB에 댓글을 저장하기
+        // DB에 게시글을 저장하기
         Post post = postRepository.saveAndFlush(new Post(user, postRequestDto));
 
-        // DB에서 저장 된 댓글을 조회하여 반환하기
+        // DB에서 저장 된 게시글을 조회하여 반환하기
         return new PostResponseDto(post);
     }
 
     @Transactional
-    public PostResponseDto update(Long id, UpdateRequestDto requestDto, String username) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, UserDetails userDetails) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND)
         );
-        if (!post.isPostWriter(username)) {
+        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+
+        if(post.getUsername() != user.getUsername() && user.getRole() != ADMIN) {
             throw new CustomException(INVALID_USER);
         }
-        post.update(requestDto);
-        return new PostResponseDto(post);
+        post.update(postRequestDto);
+
+        return new PostResponseDto(postRepository.findById(post.getId()).get());
     }
 
-    public PostResponseDto updateAdmin(Long id, UpdateRequestDto requestDto) {
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
-        );
-        post.update(requestDto);
-        return new PostResponseDto(post);
-    }
+    
 
     @Transactional
-    public void deletePost(Long id, String username) {
+    public ResponseEntity deletePost(Long id, UserDetails userDetails) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND)
         );
-        if (!post.isPostWriter(username)) {
-            throw new CustomException(INVALID_USER);
+        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+
+        //로그인한 유저와 게시글을 작성한 유저의 일치 여부를 확인하기
+        if(post.getUsername() != user.getUsername() && user.getRole() != ADMIN) { // 작성자도 어드민도 아니면 게시글을 삭제 할 수 없다.
+            throw new CustomException(INVALID_USER); // 작성자와 유저가 일치하지 않을 때
         }
         postRepository.deleteById(id);
+        return new ResponseEntity("게시글이 삭제되었습니다.", HttpStatus.OK);
     }
 
-    public void deletePostAdmin(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
-        );
-        postRepository.deleteById(id);
-    }
 }
