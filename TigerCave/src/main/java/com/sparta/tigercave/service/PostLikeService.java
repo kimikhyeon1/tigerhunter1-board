@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.sparta.tigercave.exception.ErrorCode.POST_NOT_FOUND;
-import static com.sparta.tigercave.exception.ErrorCode.USER_NOT_FOUND;
+
 
 @Transactional
 @RequiredArgsConstructor
@@ -24,22 +24,29 @@ public class PostLikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    @Transactional
+    public boolean saveLikes(Long postId, UserDetailImpl userDetails){
+        Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
+        User user = userRepository.findById(userDetails.getUserId()).get();
+        List<PostLike> postLikes = postLikeRepository.findByUserAndPost(user,post);
+        if(postLikes.isEmpty()){
+            postLikeRepository.save(new PostLike(post,user));
+            return true;
+        }
+        return false;
+    }
 
     @Transactional
-    public Long addOrDeleteLike(Long postId, UserDetailImpl userDetails) {
-        // 게시글 존재 여부 체크
+    public boolean deleteLikes(Long postId, UserDetailImpl userDetails){
         Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
-        // userDetails에서 userId 체크
         User user = userRepository.findById(userDetails.getUserId()).get();
-        // 게시글에 유저좋아요 기록이 있는지 확인
-        List<PostLike> postLikes  = postLikeRepository.findByUserAndPost(user,post);
-        // 기록이 없다면 저장
-        if (postLikes.isEmpty()){
-            postLikeRepository.save(new PostLike(post,user));
-            return postId;
+        List<PostLike> postLikes = postLikeRepository.findByUserAndPost(user,post);
+        if(!postLikes.isEmpty()){
+            postLikeRepository.delete(postLikes.get(0));
+            return true;
         }
-        // 기록이 있다면 삭제
-        postLikeRepository.delete(postLikes.get(0));
-        return postId;
+        return false;
     }
+
 }
+
