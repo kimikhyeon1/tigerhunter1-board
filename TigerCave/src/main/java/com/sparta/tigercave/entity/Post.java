@@ -29,8 +29,8 @@ public class Post extends Timestamped{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
-    @Column
-    String username;
+    @Column(nullable = false)
+    private String username;
 
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -44,7 +44,7 @@ public class Post extends Timestamped{
     }
 
     public Post(User user, PostRequestDto postRequestDto) {
-        this.username=getUsername();
+        this.username = getUsername();
         this.user = user;
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
