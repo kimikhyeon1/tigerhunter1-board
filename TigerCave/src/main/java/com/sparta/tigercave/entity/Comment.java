@@ -45,4 +45,12 @@ public class Comment extends Timestamped{
     public void update(CommentRequestDto commentRequestDto) {
         this.comment = commentRequestDto.getComment();
     }
+
+    public void addLike() {
+        this.comment_likes += 1;
+    }
+
+    public void deleteLike() {
+        this.comment_likes -= 1;
+    }
 }
