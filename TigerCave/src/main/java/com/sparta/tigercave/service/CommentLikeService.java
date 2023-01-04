@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
 import static com.sparta.tigercave.exception.ErrorCode.*;
@@ -24,8 +23,9 @@ public class CommentLikeService {
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepository commentRepository;
 
+
     @Transactional
-    public boolean addorDeleteLike(Long comment_id, BigInteger user_id) {
+    public boolean addorDeleteLike(Long comment_id, Long user_id) {
         //사용자 확인
         User user = usersRepository.findById(user_id).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)

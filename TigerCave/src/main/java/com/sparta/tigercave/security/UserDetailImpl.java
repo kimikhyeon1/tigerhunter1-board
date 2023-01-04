@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,12 +13,12 @@ public class UserDetailImpl implements UserDetails {
 
     private final User user;
 
-    private final BigInteger userId;
+    private final Long userId;
     private final String username;
 
     private final String password;
 
-    public UserDetailImpl(User user, BigInteger userId, String username, String password){
+    public UserDetailImpl(User user, Long userId, String username, String password){
         this.user = user;
         this.userId = userId;
         this.username = username;
@@ -44,7 +43,7 @@ public class UserDetailImpl implements UserDetails {
         return authorities;
     }
 
-    public BigInteger getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
