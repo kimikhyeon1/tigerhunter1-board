@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+//@RequestMapping("/api")
 public class PostController {
     private final PostService postService;
     private final PostLikeService postLikeService;
@@ -29,14 +29,10 @@ public class PostController {
     public List<PostResponseDto> getPostList(){
         return postService.getPostList();
     }
-    @PostMapping("/api/post/{postId}/like")
-    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-        return postLikeService.addOrDeleteLike(postId,userDetails);
-    }
 
     @PostMapping("/api/post")
-    public PostResponseDto createPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
-        return postService.createPost(id, postRequestDto, userDetails);
+    public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        return postService.createPost(postRequestDto, userDetails);
     }
 
     @PutMapping("/api/post/{id}")
@@ -44,9 +40,14 @@ public class PostController {
         return postService.updatePost(id, postRequestDto, userDetails);
     }
 
-    @DeleteMapping("/api/post/{id}")
+    @DeleteMapping("/api/post/{post_id}")
     public ResponseEntity deletePost(@PathVariable Long post_id, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.deletePost(post_id, userDetails);
+    }
+
+    @PostMapping("/api/post/{postId}/like")
+    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
+        return postLikeService.addOrDeleteLike(postId,userDetails);
     }
 
 }
