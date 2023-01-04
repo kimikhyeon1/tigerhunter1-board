@@ -23,7 +23,7 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public boolean addorDeleteLike(Long comment_id, Long user_id) {
+    public boolean addOrDeleteLike(Long comment_id, Long user_id) {
         //사용자 확인
         User user = userRepository.findById(user_id).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)

@@ -132,9 +132,9 @@ public class PostController {
         postService.deletePost(id, authenticatedUserInfoDto.getUsername());
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
-    @PostMapping("/api/posts/{postId}/like")
-    public Long addLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-        return postLikeService.addLike(postId,userDetails);
+    @PostMapping("/api/post/{postId}/like")
+    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
+        return postLikeService.addOrDeleteLike(postId,userDetails);
     }
 
 }

@@ -17,8 +17,8 @@ public class CommentLikeController {
 
     // 좋아요 추가
     @PostMapping("/{comment_id}/like")
-    public ResponseEntity addLike(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetailImpl userDetail) {
-        Boolean likeOpt = commentLikeService.addorDeleteLike(comment_id, userDetail.getUserId());
+    public ResponseEntity addOrDeleteLike(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetailImpl userDetail) {
+        Boolean likeOpt = commentLikeService.addOrDeleteLike(comment_id, userDetail.getUserId());
 
         // 좋아요 등록
         if (likeOpt) {
