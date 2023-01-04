@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료">
+    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : SecurityConfig.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/UserDetailImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/resources/application-secret.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,12 +46,12 @@
     </option>
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="feature/login" />
+    <option name="BRANCH" value="feature/security" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/security" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
