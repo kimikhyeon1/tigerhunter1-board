@@ -35,7 +35,6 @@ public class UserDetailImpl implements UserDetails {
         UserRoleEnum roleEnum = user.getRole();
         String authority = roleEnum.getAuthority();
 
-
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);

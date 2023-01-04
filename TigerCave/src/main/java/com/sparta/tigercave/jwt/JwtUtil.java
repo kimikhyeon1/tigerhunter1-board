@@ -10,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +25,6 @@ import java.util.Date;
 
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
 
-@Slf4j              // SLF4J는 Java의 로깅 모듈들의 추상체 -> 로그를 찍어주기 위함
 @Component          //개발자가 직접 작성한 class를 bean으로 등록하려고 할때 사용하는 어노테이션
 @RequiredArgsConstructor
 public class JwtUtil {
@@ -101,7 +99,7 @@ public class JwtUtil {
         if (this.validateToken(token)) {
             Claims claims = this.getUserInfoFromToken(token);
             String username = claims.getSubject();
-            UserRoleEnum role = UserRoleEnum.valueOf(claims.get("auth").toString());
+            UserRoleEnum role = UserRoleEnum.valueOf(claims.get("role").toString());
             return new AuthenticatedUserInfoDto(role, username);
         } else {
             throw new CustomException(ErrorCode.INVALID_TOKEN);

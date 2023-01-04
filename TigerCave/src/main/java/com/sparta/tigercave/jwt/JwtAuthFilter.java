@@ -17,7 +17,6 @@ import java.io.IOException;
 
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_AUTH_TOKEN;
 
-@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;

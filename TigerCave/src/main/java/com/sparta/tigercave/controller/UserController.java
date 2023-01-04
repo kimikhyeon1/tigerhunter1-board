@@ -8,12 +8,12 @@ import com.sparta.tigercave.jwt.JwtUtil;
 import com.sparta.tigercave.repository.UserRepository;
 import com.sparta.tigercave.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -29,7 +29,8 @@ public class UserController {
 
     private final JwtUtil jwtUtil;
 
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    @Value("${admin.token}")
+    private String ADMIN_TOKEN;
 
     @PostMapping("/signup")
     public ResponseEntity signUp(@RequestBody @Validated UserDto.signUpRequestDto signUpRequestDto, BindingResult bindingresult){
