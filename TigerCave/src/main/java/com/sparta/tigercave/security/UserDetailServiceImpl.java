@@ -1,22 +1,25 @@
 package com.sparta.tigercave.security;
 
-import com.sparta.tigercave.entity.Users;
-import com.sparta.tigercave.repository.UsersRepository;
+import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.exception.CustomException;
+import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static com.sparta.tigercave.exception.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = usersRepository.findByUsername(username)
+        User users = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
         return new UserDetailImpl(users, users.getUsername());

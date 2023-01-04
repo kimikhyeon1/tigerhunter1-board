@@ -5,10 +5,9 @@ import com.sparta.tigercave.entity.PostLike;
 import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.repository.PostLikeRepository;
 import com.sparta.tigercave.repository.PostRepository;
-import com.sparta.tigercave.repository.UsersRepository;
+import com.sparta.tigercave.repository.UserRepository;
 import com.sparta.tigercave.security.UserDetailImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 public class PostLikeService {
     private final PostLikeRepository postLikeRepository;
     private final PostRepository postRepository;
-    private final UsersRepository userRepository;
+    private final UserRepository userRepository;
 
 
     @Transactional

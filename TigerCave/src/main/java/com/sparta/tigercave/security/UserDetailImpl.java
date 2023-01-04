@@ -19,7 +19,7 @@ public class UserDetailImpl implements UserDetails {
 
     private final String password;
 
-    public UserDetailImpl(User user, BigInteger userId, String username, String password){
+    public UserDetailImpl(User user, String username){
         this.user = user;
         this.userId = userId;
         this.username = username;
