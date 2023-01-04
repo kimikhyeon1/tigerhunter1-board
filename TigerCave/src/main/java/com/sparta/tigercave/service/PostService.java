@@ -22,7 +22,6 @@ public class PostService {
 
     private final UserRepository userRepository;
     private final PostRepository blogRepository;
-    private final UserRepository userRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
         User users = userRepository.findByUsername(username).orElseThrow(

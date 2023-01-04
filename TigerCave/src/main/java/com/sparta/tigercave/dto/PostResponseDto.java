@@ -18,8 +18,9 @@ public class PostResponseDto {
     private String title;
     private String username;
     private String contents;
-    private List<CommentResponseDto> commentList;
     private int likecount;
+    private List<CommentResponseDto> commentList;
+
 
     public PostResponseDto(Post post) {
         this.createdAt = post.getCreateAt(); // post.getCreatedAt(); -> post.getCreateAt(); 으로 수정 했습니다.
