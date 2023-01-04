@@ -6,7 +6,7 @@ import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.CommentLikeRepository;
 import com.sparta.tigercave.repository.CommentRepository;
-import com.sparta.tigercave.repository.UsersRepository;
+import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +20,14 @@ import static com.sparta.tigercave.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class CommentLikeService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
     public boolean addorDeleteLike(Long comment_id, BigInteger user_id) {
         //사용자 확인
-        User user = usersRepository.findById(user_id).orElseThrow(
+        User user = userRepository.findById(user_id).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)
         );
 

@@ -5,7 +5,7 @@ import com.sparta.tigercave.entity.Post;
 import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.PostRepository;
-import com.sparta.tigercave.repository.UsersRepository;
+import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ import static com.sparta.tigercave.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final PostRepository blogRepository;
-    private final UsersRepository userRepository;
+    private final UserRepository userRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
         User users = userRepository.findByUsername(username).orElseThrow(
@@ -62,7 +62,7 @@ public class PostService {
 
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
+        User user = userRepository.findByUsername(userDetails.getUsername()).get();
 
         // DB에 댓글을 저장하기
         Post post = blogRepository.saveAndFlush(new Post(user, postRequestDto));
