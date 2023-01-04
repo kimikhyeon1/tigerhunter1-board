@@ -33,7 +33,7 @@ public class CommentService {
 
     @Transactional
     // 댓글 작성하기
-    public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto, UserDetails userDetails) {
+    public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto, String username) {
 
 
         // 댓글을 작성하기 위한 게시글이 존재하는지 확인한다.
@@ -41,7 +41,7 @@ public class CommentService {
                 () -> new CustomException(POST_NOT_FOUND) // 게시글이 존재하지 않을 때
         );
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+        User user = userRepository.findByUsername(username).get();
         // DB에 댓글을 저장하기
         Comment comment = commentRepository.saveAndFlush(new Comment(user, post, commentRequestDto));
         // 영속성 컨테스트 초기화 DB에서 저장된 값을 조회하기 위함
@@ -52,13 +52,13 @@ public class CommentService {
 
     @Transactional
     // 댓글 수정하기
-    public CommentResponseDto updateComment(Long id, CommentRequestDto commentRequestDto, UserDetails userDetails) {
+    public CommentResponseDto updateComment(Long id, CommentRequestDto commentRequestDto, String username) {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(COMMENT_NOT_FOUND) // 댓글이 존재 하지 않을 때
         );
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+        User user = userRepository.findByUsername(username).get();
 
         //로그인한 유저와 댓글을 작성한 유저의 일치 여부를 확인하기
         if(comment.getUsername() != user.getUsername() && user.getRole() != ADMIN) { // 작성자도 어드민도 아니면 댓글을 수정 할 수 없다.
@@ -71,13 +71,13 @@ public class CommentService {
 
     @Transactional
     // 댓글 삭제하기
-    public ResponseEntity deleteComment(Long id, UserDetails userDetails) {
+    public ResponseEntity deleteComment(Long id, String username) {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(COMMENT_NOT_FOUND) // 댓글이 존재하지 않을 때
         );
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+        User user = userRepository.findByUsername(username).get();
 
         //로그인한 유저와 댓글을 작성한 유저의 일치 여부를 확인하기
         if(comment.getUsername() != user.getUsername() && user.getRole() != ADMIN) { // 작성자도 어드민도 아니면 댓글을 삭제 할 수 없다.
