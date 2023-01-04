@@ -23,7 +23,7 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public boolean addOrDeleteLike(Long comment_id, Long user_id) {
+    public boolean addLike(Long comment_id, Long user_id) {
         //사용자 확인
         User user = userRepository.findById(user_id).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)
@@ -45,10 +45,33 @@ public class CommentLikeService {
         }
 
         //이미 좋아요를 한 사용자일 경우
-        commentLikeRepository.deleteById(isExistCommentLike.get().getId());
-        comment.deleteLike();
         return false;
+    }
 
+    @Transactional
+    public boolean deleteLike(Long comment_id, Long user_id) {
+        //사용자 확인
+        User user = userRepository.findById(user_id).orElseThrow(
+                () -> new CustomException(USER_NOT_FOUND)
+        );
+
+        //댓글 확인
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(
+                () -> new CustomException(COMMENT_NOT_FOUND)
+        );
+
+        //사용자의 좋아요 상태 체크
+        Optional<CommentLike> isExistCommentLike = commentLikeRepository.findByUserAndComment(user, comment);
+
+        //아직 좋아요를 안 한 사용자일 경우
+        if (isExistCommentLike.isPresent()) {
+            commentLikeRepository.deleteById(isExistCommentLike.get().getId());
+            comment.deleteLike();
+            return true;
+        }
+
+        //이미 좋아요를 한 사용자일 경우
+        return false;
     }
 
 }
