@@ -19,10 +19,7 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
 
-//    @PostMapping("/{postId}/like")
-//    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-//        return postLikeService.addOrDeleteLike(postId,userDetails);
-//    }
+
     @PostMapping("/{postId}/like")
     public ResponseEntity like(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
         boolean likeCheck = postLikeService.saveLikes(postId,userDetails);

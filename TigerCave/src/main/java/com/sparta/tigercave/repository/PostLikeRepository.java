@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     List<PostLike> findByUserAndPost(User user,Post post);
-    int countByUserId(User user);
 }

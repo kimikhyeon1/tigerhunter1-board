@@ -24,25 +24,6 @@ public class PostLikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-
-//    @Transactional
-//    public boolean addOrDeleteLike(Long postId, UserDetailImpl userDetails) {
-//        // 게시글 존재 여부 체크
-//        Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
-//        // userDetails에서 userId 체크
-//        User user = userRepository.findById(userDetails.getUserId()).get();
-//        // 게시글에 유저좋아요 기록이 있는지 확인
-//        List<PostLike> postLikes  = postLikeRepository.findByUserAndPost(user,post);
-//        // 기록이 없다면 저장
-//        if (postLikes.isEmpty()){
-//            postLikeRepository.save(new PostLike(post,user));
-//            return true;
-//        }
-//        // 기록이 있다면 삭제
-//        postLikeRepository.delete(postLikes.get(0));
-//        return false;
-//    }
-
     @Transactional
     public boolean saveLikes(Long postId, UserDetailImpl userDetails){
         Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(POST_NOT_FOUND));
