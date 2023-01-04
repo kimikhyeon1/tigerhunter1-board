@@ -1,0 +1,56 @@
+package com.sparta.tigercave.service;
+
+import com.sparta.tigercave.entity.Comment;
+import com.sparta.tigercave.entity.CommentLike;
+import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.exception.CustomException;
+import com.sparta.tigercave.repository.CommentLikeRepository;
+import com.sparta.tigercave.repository.CommentRepository;
+import com.sparta.tigercave.repository.UsersRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigInteger;
+import java.util.Optional;
+
+import static com.sparta.tigercave.exception.ErrorCode.*;
+
+@Service
+@RequiredArgsConstructor
+public class CommentLikeService {
+
+    private final UsersRepository usersRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    private final CommentRepository commentRepository;
+
+    @Transactional
+    public boolean addorDeleteLike(Long comment_id, BigInteger user_id) {
+        //사용자 확인
+        User user = usersRepository.findById(user_id).orElseThrow(
+                () -> new CustomException(USER_NOT_FOUND)
+        );
+
+        //댓글 확인
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(
+                () -> new CustomException(COMMENT_NOT_FOUND)
+        );
+
+        //사용자의 좋아요 상태 체크
+        Optional<CommentLike> isExistCommentLike = commentLikeRepository.findByUserAndComment(user, comment);
+
+        //아직 좋아요를 안 한 사용자일 경우
+        if (isExistCommentLike.isEmpty()) {
+            commentLikeRepository.save(new CommentLike(user, comment));
+            comment.addLike();
+            return true;
+        }
+
+        //이미 좋아요를 한 사용자일 경우
+        commentLikeRepository.deleteById(isExistCommentLike.get().getId());
+        comment.deleteLike();
+        return false;
+
+    }
+
+}
