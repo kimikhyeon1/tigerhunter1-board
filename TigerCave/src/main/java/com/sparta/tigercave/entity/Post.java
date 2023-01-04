@@ -13,10 +13,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 public class Post extends Timestamped{
-    /* iD가 2부터 저장되는 오류가 있습니다.strategy 속성의 값을
-    GenerationType.AUTO에서 GenerationType.IDENTITY로 바꾸어주면 1부터 시작합니다. - 우시은*/
+    /* ID가 2부터 저장되는 오류가 있습니다.strategy 속성의 값을 GenerationType.IDENTITY)로 바꾸어주면 될 것 같습니다. - 우시은*/
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
     private Long id;
 

@@ -28,7 +28,6 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UsersRepository usersRepository;
-    // 영속성 컨텍스트을 제어하기 위해 엔티티매니저 주입
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,15 +35,16 @@ public class CommentService {
     // 댓글 작성하기
     public CommentResponseDto createComment(Long id, CommentRequestDto commentRequestDto, UserDetails userDetails) {
 
+
         // 댓글을 작성하기 위한 게시글이 존재하는지 확인한다.
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND) // 게시글이 존재하지 않을 때
         );
-        // userDetails에서 가져온 사용자 정보를 사용하여 User의 인스턴스 가져오기
+        // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
         User user = usersRepository.findByUsername(userDetails.getUsername()).get();
         // DB에 댓글을 저장하기
         Comment comment = commentRepository.saveAndFlush(new Comment(user, post, commentRequestDto));
-        // 영속성 컨테스트 초기화, DB에서 저장된 값을 조회하기 위함
+        // 영속성 컨테스트 초기화 DB에서 저장된 값을 조회하기 위함
         entityManager.clear();
         // DB에서 저장된 댓글을 조회하여 반환하기
         return new CommentResponseDto(commentRepository.findById(comment.getId()).get());
@@ -56,6 +56,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(COMMENT_NOT_FOUND) // 댓글이 존재 하지 않을 때
         );
+
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
         User user = usersRepository.findByUsername(userDetails.getUsername()).get();
 
