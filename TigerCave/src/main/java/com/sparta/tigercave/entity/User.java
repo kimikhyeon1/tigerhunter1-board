@@ -8,10 +8,10 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.SQLIntegrityConstraintViolationException;
 
-@Entity(name="USERS")
+@Entity
 @NoArgsConstructor
 @Getter
-public class User{
+public class Users extends Timestamped{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,11 +22,29 @@ public class User{
     private String password;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRoleEnum role;
+    private UsersRoleEnum role;
 
-    public User(String username, String password, UserRoleEnum role){
+    public Users(String username, String password, UsersRoleEnum role){
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    /* public Users(String username, String password, UsersRoleEnum role) throws SQLIntegrityConstraintViolationException {
+         this.username = username;
+         this.password = password;
+         this.role = role;
+         if (username == null) {
+             throw new IdentifierGenerationException("아이디를 입력하세요.");
+         }
+         if (password == null) {
+             throw new SQLIntegrityConstraintViolationException("비밀번호를 입력하세요.");
+         }
+     }*/
+    public boolean checkUserName(String username){
+
+        if(this.username.equals(username)){
+            return true;
+        }
+        return false;
     }
 }

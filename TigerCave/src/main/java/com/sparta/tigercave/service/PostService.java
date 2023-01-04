@@ -1,32 +1,29 @@
 package com.sparta.tigercave.service;
 
-import com.sparta.tigercave.dto.*;
+import com.sparta.tigercave.dto.PostRequestDto;
+import com.sparta.tigercave.dto.PostResponseDto;
+import com.sparta.tigercave.dto.UpdateRequestDto;
+import com.sparta.tigercave.dto.UserNameRequestDto;
 import com.sparta.tigercave.entity.Post;
-import com.sparta.tigercave.entity.User;
-import com.sparta.tigercave.exception.CustomException;
+import com.sparta.tigercave.entity.Users;
 import com.sparta.tigercave.repository.PostRepository;
 import com.sparta.tigercave.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sparta.tigercave.exception.ErrorCode.*;
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
-    private final UsersRepository usersRepository;
     private final PostRepository blogRepository;
-    private final UsersRepository userRepository;
+    private final UsersRepository usersRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, String username) {
-        User users = userRepository.findByUsername(username).orElseThrow(
-                () -> new CustomException(USER_NOT_FOUND)
+        Users users = usersRepository.findByUsername(username).orElseThrow(
+                () -> new CustomException("아이디가 존재하지 않습니다.")
         );
         Post post = new Post(requestDto, users);
         blogRepository.save(post);
@@ -43,41 +40,25 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPostById(Long id) {
         Post post = blogRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
+                () -> new CustomException("존재하지 않는 포스팅입니다.")
         );
         return new PostResponseDto(post);
     }
 
-//    @Transactional(readOnly = true)
-//    public List<PostResponseDto> getPostByUsername(UserNameRequestDto requestDto) {
-//        String username = requestDto.getUsername();
-//        List<Post> postList = blogRepository.findByUserUsername(username);
-//        return postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
-//    }
-
-
-    @Transactional
-    public PostResponseDto createPost(PostRequestDto postRequestDto, UserDetails userDetails) {
-
-
-
-        // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
-        User user = usersRepository.findByUsername(userDetails.getUsername()).get();
-
-        // DB에 댓글을 저장하기
-        Post post = blogRepository.saveAndFlush(new Post(user, postRequestDto));
-
-        // DB에서 저장 된 댓글을 조회하여 반환하기
-        return new PostResponseDto(post);
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> getPostByUsername(UserNameRequestDto requestDto) {
+        String username = requestDto.getUsername();
+        List<Post> postList = blogRepository.findByUserUsername(username);
+        return postList.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
     }
 
     @Transactional
     public PostResponseDto update(Long id, UpdateRequestDto requestDto, String username) {
         Post post = blogRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
+                () -> new CustomException("존재하지 않는 포스팅입니다.")
         );
         if (!post.isPostWriter(username)) {
-            throw new CustomException(INVALID_USER);
+            throw new CustomException("본인이 작성한 게시글만 수정할 수 있습니다.");
         }
         post.update(requestDto);
         return new PostResponseDto(post);
@@ -85,7 +66,7 @@ public class PostService {
 
     public PostResponseDto updateAdmin(Long id, UpdateRequestDto requestDto) {
         Post post = blogRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
+                () -> new CustomException("존재하지 않는 포스팅입니다.")
         );
         post.update(requestDto);
         return new PostResponseDto(post);
@@ -94,17 +75,17 @@ public class PostService {
     @Transactional
     public void deletePost(Long id, String username) {
         Post post = blogRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
+                () -> new CustomException("존재하지 않는 포스팅입니다.")
         );
         if (!post.isPostWriter(username)) {
-            throw new CustomException(INVALID_USER);
+            throw new CustomException("본인이 작성한 게시글만 삭제할 수 있습니다.");
         }
         blogRepository.deleteById(id);
     }
 
     public void deletePostAdmin(Long id) {
         Post post = blogRepository.findById(id).orElseThrow(
-                () -> new CustomException(POST_NOT_FOUND)
+                () -> new CustomException("존재하지 않는 포스팅입니다.")
         );
         blogRepository.deleteById(id);
     }

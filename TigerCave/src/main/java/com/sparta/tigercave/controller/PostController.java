@@ -2,24 +2,21 @@ package com.sparta.tigercave.controller;
 
 import com.sparta.tigercave.dto.*;
 import com.sparta.tigercave.entity.StatusEnum;
-import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.entity.UsersRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
-import com.sparta.tigercave.security.UserDetailImpl;
-import com.sparta.tigercave.service.PostLikeService;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_AUTH_TOKEN;
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
@@ -28,7 +25,6 @@ import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
-    private final PostLikeService postLikeService;
     private final JwtUtil jwtUtil;
 
 
@@ -37,21 +33,15 @@ public class PostController {
         return new ModelAndView();
     }
 
-//    @PostMapping("/posts")
-//    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request) {
-//        String token = jwtUtil.resolveToken(request);
-//
-//        if (token == null) {
-//            throw new CustomException(INVALID_TOKEN);
-//        }
-//        AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
-//        return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
-//    }
-
     @PostMapping("/posts")
-    public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto,
-                                            @AuthenticationPrincipal UserDetails userDetails) {
-        return postService.createPost(postRequestDto, userDetails);
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+
+        if (token == null) {
+            throw new CustomException(INVALID_TOKEN);
+        }
+        AuthenticatedUserInfoDto authenticatedUserInfoDto = jwtUtil.validateAndGetUserInfo(token);
+        return postService.createPost(requestDto, authenticatedUserInfoDto.getUsername());
     }
 
 
@@ -60,17 +50,17 @@ public class PostController {
         return postService.getPostById(id);
     }
 
-//    @GetMapping("/posts")
-//    public List<PostResponseDto> getAllPostsOrGetpostByUsername(@RequestBody(required = false) UserNameRequestDto requestDto) {
-//        if (requestDto == null) {
-//            return postService.getAllPosts();
-//        } else {
-//            return postService.getPostByUsername(requestDto);
-//        }
-//    }
+    @GetMapping("/posts")
+    public List<PostResponseDto> getAllPostsOrGetpostByUsername(@RequestBody(required = false) UserNameRequestDto requestDto) {
+        if (requestDto == null) {
+            return postService.getAllPosts();
+        } else {
+            return postService.getPostByUsername(requestDto);
+        }
+    }
 
-    private boolean isAdmin(UserRoleEnum usersRoleEnum) {
-        return usersRoleEnum == UserRoleEnum.ADMIN;
+    private boolean isAdmin(UsersRoleEnum usersRoleEnum) {
+        return usersRoleEnum == UsersRoleEnum.ADMIN;
     }
 
     @PutMapping("/admin/posts/{id}")
@@ -132,9 +122,4 @@ public class PostController {
         postService.deletePost(id, authenticatedUserInfoDto.getUsername());
         return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
     }
-    @PostMapping("/api/posts/{postId}/like")
-    public Long addLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-        return postLikeService.addLike(postId,userDetails);
-    }
-
 }
