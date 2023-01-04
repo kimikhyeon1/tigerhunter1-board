@@ -24,27 +24,30 @@ public class PostController {
     private final JwtUtil jwtUtil;
 
 
-
+    //게시글 목록
     @GetMapping("/api/post")
     public List<PostResponseDto> getPostList(){
         return postService.getPostList();
     }
 
+    //게시글 작성
     @PostMapping("/api/post")
     public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }
 
+    // 게시글 수정
     @PutMapping("/api/post/{id}")
     public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.updatePost(id, postRequestDto, userDetails);
     }
-
+    // 게시글 삭제
     @DeleteMapping("/api/post/{post_id}")
     public ResponseEntity deletePost(@PathVariable Long post_id, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.deletePost(post_id, userDetails);
     }
 
+    // 게시글 좋아요
     @PostMapping("/api/post/{postId}/like")
     public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
         return postLikeService.addOrDeleteLike(postId,userDetails);

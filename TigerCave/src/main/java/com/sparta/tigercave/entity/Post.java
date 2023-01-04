@@ -43,13 +43,6 @@ public class Post extends Timestamped{
         return this.likes.size();
     }
 
-
-    public Post(PostRequestDto requestDto, User user) {
-        this.user = user;
-        this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
-    }
-
     public Post(User user, PostRequestDto postRequestDto) {
         this.user = user;
         this.title = postRequestDto.getTitle();

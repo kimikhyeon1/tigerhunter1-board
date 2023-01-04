@@ -50,11 +50,12 @@ public class PostService {
 
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, UserDetails userDetails) {
+        // 게시글 존재 여부 확인
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND)
         );
         User user = userRepository.findByUsername(userDetails.getUsername()).get();
-
+        // 작성자이거나 관리자인지 확인
         if(post.getUsername() != user.getUsername() && user.getRole() != ADMIN) {
             throw new CustomException(INVALID_USER);
         }
