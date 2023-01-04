@@ -29,9 +29,9 @@ public class PostController {
     public List<PostResponseDto> getPostList(){
         return postService.getPostList();
     }
-    @PostMapping("/api/posts/{postId}/like")
-    public Long addLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
-        return postLikeService.addLike(postId,userDetails);
+    @PostMapping("/api/post/{postId}/like")
+    public Long addOrDeleteLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailImpl userDetails){
+        return postLikeService.addOrDeleteLike(postId,userDetails);
     }
 
     @PostMapping("/api/post")

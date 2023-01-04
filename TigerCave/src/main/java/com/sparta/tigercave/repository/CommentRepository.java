@@ -7,8 +7,4 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-
-    Comment findCommentById(Long id);
-
-
 }

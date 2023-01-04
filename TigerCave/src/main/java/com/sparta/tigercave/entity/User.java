@@ -2,10 +2,10 @@ package com.sparta.tigercave.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import org.hibernate.id.IdentifierGenerationException;
 
 import javax.persistence.*;
-
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @Entity(name="USERS")
 @NoArgsConstructor

@@ -1,8 +1,8 @@
 package com.sparta.tigercave.service;
 
 import com.sparta.tigercave.dto.UserDto;
-import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.entity.User;
+import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +13,21 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.sparta.tigercave.exception.ErrorCode.PASSWORD_NOT_FOUND;
 import static com.sparta.tigercave.exception.ErrorCode.USER_NOT_FOUND;
 
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+
     @Transactional
     public void signUp(UserDto.signUpRequestDto signUpDto, UserRoleEnum role) {
         String password = passwordEncoder.encode(signUpDto.getPassword());
         userRepository.save(new User(signUpDto.getUsername(), password, role));
     }
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public UserDto.loginResponseDto login(String username, String password) {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException(USER_NOT_FOUND));

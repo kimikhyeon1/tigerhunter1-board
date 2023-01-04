@@ -16,7 +16,6 @@ public enum ErrorCode {
     INVALID_TOKEN(BAD_REQUEST, "토큰이 유효하지 않습니다."),
     INVALID_USER(BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다."),
 
-
     //401 UNAUTHORIZED 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다."),
 

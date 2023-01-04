@@ -24,7 +24,7 @@ import static com.sparta.tigercave.exception.ErrorCode.*;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final UserService usersService;
+    private final UserService userService;
     private final UserRepository userRepository;
 
     private final JwtUtil jwtUtil;
@@ -54,15 +54,15 @@ public class UserController {
             role = UserRoleEnum.ADMIN;
         }
 
-        usersService.signUp(signUpRequestDto, role);
+        userService.signUp(signUpRequestDto, role);
         return new ResponseEntity<>("회원가입에 성공하였습니다", HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, HttpServletResponse response){
 
-        UserDto.loginResponseDto user = usersService.login(username, password);
-
+        UserDto.loginResponseDto user = userService.login(username, password);
+        
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
         return new ResponseEntity("로그인에 성공하였습니다.", HttpStatus.OK);
     }
