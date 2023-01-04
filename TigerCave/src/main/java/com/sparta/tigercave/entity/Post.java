@@ -15,7 +15,7 @@ import java.util.List;
 public class Post extends Timestamped{
     /* ID가 2부터 저장되는 오류가 있습니다.strategy 속성의 값을 GenerationType.IDENTITY)로 바꾸어주면 될 것 같습니다. - 우시은*/
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
 

@@ -1,10 +1,10 @@
 package com.sparta.tigercave.service;
 
-import com.sparta.tigercave.dto.UsersDto;
+import com.sparta.tigercave.dto.UserDto;
 import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
-import com.sparta.tigercave.repository.UsersRepository;
+import com.sparta.tigercave.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,25 +16,25 @@ import static com.sparta.tigercave.exception.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
-public class UsersService {
+public class UserService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public void signUp(UsersDto.signUpRequestDto signUpDto, UserRoleEnum role) {
+    public void signUp(UserDto.signUpRequestDto signUpDto, UserRoleEnum role) {
         String password = passwordEncoder.encode(signUpDto.getPassword());
-        usersRepository.save(new User(signUpDto.getUsername(), password, role));
+        userRepository.save(new User(signUpDto.getUsername(), password, role));
     }
 
     @Transactional(readOnly = true)
-    public UsersDto.loginResponseDto login(String username, String password) {
+    public UserDto.loginResponseDto login(String username, String password) {
 
-        User user = usersRepository.findByUsername(username).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(PASSWORD_NOT_FOUND);
         }
-        return new UsersDto.loginResponseDto(user.getUsername(), user.getPassword(), user.getRole());
+        return new UserDto.loginResponseDto(user.getUsername(), user.getPassword(), user.getRole());
     }
 }

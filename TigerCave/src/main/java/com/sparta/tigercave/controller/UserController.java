@@ -1,12 +1,12 @@
 package com.sparta.tigercave.controller;
 
-import com.sparta.tigercave.dto.UsersDto;
+import com.sparta.tigercave.dto.UserDto;
 import com.sparta.tigercave.entity.User;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
 import com.sparta.tigercave.jwt.JwtUtil;
-import com.sparta.tigercave.repository.UsersRepository;
-import com.sparta.tigercave.service.UsersService;
+import com.sparta.tigercave.repository.UserRepository;
+import com.sparta.tigercave.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +22,17 @@ import static com.sparta.tigercave.exception.ErrorCode.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-public class UsersController {
+public class UserController {
 
-    private final UsersService usersService;
-    private final UsersRepository usersRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     private final JwtUtil jwtUtil;
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/signup")
-    public ResponseEntity signUp(@RequestBody @Validated UsersDto.signUpRequestDto signUpRequestDto, BindingResult bindingresult){
+    public ResponseEntity signUp(@RequestBody @Validated UserDto.signUpRequestDto signUpRequestDto, BindingResult bindingresult){
 
         //유효성 검사 실패할 경우 에러메세지 반환
         if(bindingresult.hasErrors()){
@@ -40,7 +40,7 @@ public class UsersController {
         }
 
         //이미 존재한 user인지 확인
-        Optional<User> check_result = usersRepository.findByUsername(signUpRequestDto.getUsername());
+        Optional<User> check_result = userRepository.findByUsername(signUpRequestDto.getUsername());
         check_result.ifPresent(m -> {
             throw new CustomException(DUPLICATE_USERNAME);
         });
@@ -54,14 +54,14 @@ public class UsersController {
             role = UserRoleEnum.ADMIN;
         }
 
-        usersService.signUp(signUpRequestDto, role);
+        userService.signUp(signUpRequestDto, role);
         return new ResponseEntity<>("회원가입에 성공하였습니다", HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestParam String username, @RequestParam String password, HttpServletResponse response){
 
-        UsersDto.loginResponseDto user = usersService.login(username, password);
+        UserDto.loginResponseDto user = userService.login(username, password);
         
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
         return new ResponseEntity("로그인에 성공하였습니다.", HttpStatus.OK);
