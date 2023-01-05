@@ -9,6 +9,7 @@ import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,6 @@ import java.util.List;
 //@RequestMapping("/api")
 public class PostController {
     private final PostService postService;
-    private final PostLikeService postLikeService;
-    private final JwtUtil jwtUtil;
-
 
     //게시글 목록
     @GetMapping("/api/posts")
@@ -32,6 +30,7 @@ public class PostController {
 
     //게시글 작성
     @PostMapping("/api/post")
+    @PreAuthorize("isAuthenticated() or hasRole('ROLE_ADMIN')")     //해당 메소드를 실행하기 전 로그인한 상태 또는 ADMIN권한을 가지고 있느냐 체크
     public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }

@@ -25,8 +25,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         //헤더에서 jwt를 받아오기
         String token = jwtUtil.resolveToken(request);
-        //유효한 토큰인지 확인
 
+        //유효한 토큰인지 확인
         if(token != null){
             if(!jwtUtil.validateToken(token)){
                 new CustomException(INVALID_AUTH_TOKEN);
