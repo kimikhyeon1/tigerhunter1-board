@@ -30,7 +30,6 @@ public class PostController {
 
     //게시글 작성
     @PostMapping("/api/post")
-//    @PreAuthorize("isAuthenticated() or hasRole(${UserRoleEnum.ADMIN.getAuthority()})")     //해당 메소드를 실행하기 전 로그인한 상태 또는 ADMIN권한을 가지고 있느냐 체크
     public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }
