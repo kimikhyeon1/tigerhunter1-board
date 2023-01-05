@@ -8,7 +8,9 @@ import com.sparta.tigercave.service.PostLikeService;
 import com.sparta.tigercave.service.PostService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +26,15 @@ public class PostController {
 
     //게시글 목록
     @GetMapping("/api/posts")
-    public List<PostResponseDto> getPostList(){
-        return postService.getPostList();
+    public ResponseEntity getPostList(){
+        if(postService.getPostList()==null){
+            return new ResponseEntity("작성된 게시글이 없습니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity(postService.getPostList(), HttpStatus.OK);
     }
 
     //게시글 작성
     @PostMapping("/api/post")
-//    @PreAuthorize("isAuthenticated() or hasRole(${UserRoleEnum.ADMIN.getAuthority()})")     //해당 메소드를 실행하기 전 로그인한 상태 또는 ADMIN권한을 가지고 있느냐 체크
     public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }

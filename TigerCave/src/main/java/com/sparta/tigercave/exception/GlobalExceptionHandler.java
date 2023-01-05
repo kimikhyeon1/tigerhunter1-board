@@ -1,10 +1,13 @@
 package com.sparta.tigercave.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.rmi.ServerException;
 
 import static com.sparta.tigercave.exception.ErrorCode.SERVER_ERROR;
 
@@ -25,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     //서버에러 별도 처리
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({ ServerException.class })
     protected ResponseEntity<ErrorResponse> handleServerException() {
         log.error("handleServerException", SERVER_ERROR);
         return ErrorResponse.toResponseEntity(SERVER_ERROR);

@@ -3,7 +3,7 @@ package com.sparta.tigercave.jwt;
 import com.sparta.tigercave.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,18 +23,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        //헤더에서 jwt를 받아오기
+
         String token = jwtUtil.resolveToken(request);
 
-        //유효한 토큰인지 확인
         if(token != null){
             if(!jwtUtil.validateToken(token)){
-                new CustomException(INVALID_AUTH_TOKEN);
+                response.setContentType("application/json;charset=UTF-8");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                JSONObject responseJson = new JSONObject();
+                responseJson.put("message", "잘못된 토큰 값 입니다.");
+                responseJson.put("code", 401);
+
+                response.getWriter().print(responseJson);
                 return;
             }
-            //토큰이 유효하면 토큰으로부터 유저정보를 받아오기
             Claims claims = jwtUtil.getUserInfoFromToken(token);
-            //SecurityContext에 Authentication 객체를 저장.
             setAuthentication(claims.getSubject());
         }
         filterChain.doFilter(request, response);

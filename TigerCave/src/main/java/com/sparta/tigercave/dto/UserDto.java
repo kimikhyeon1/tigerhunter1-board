@@ -3,6 +3,7 @@ package com.sparta.tigercave.dto;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Pattern;
 
@@ -15,7 +16,8 @@ public class UserDto {
         @Pattern(regexp = "[\\w0-9~!@#$%^&*()_+|<>?:{}]{8,15}", message = "최소 8자 이상, 15자 이하 알파벳 대소문자(a~z, A~Z), 숫자(0~9)를 혼합하여 입력해주세요.")
         private String password;
         private boolean admin = false;
-        private String adminToken = "";
+
+        private String adminToken="";
 
         public signUpRequestDto(String username, String password){
             this.username = username;

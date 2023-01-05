@@ -1,6 +1,8 @@
 package com.sparta.tigercave.config;
 
 import com.sparta.tigercave.entity.UserRoleEnum;
+import com.sparta.tigercave.jwt.CustomAccessDeniedHandler;
+import com.sparta.tigercave.jwt.CustomAuthenticationEntryPoint;
 import com.sparta.tigercave.jwt.JwtAuthFilter;
 import com.sparta.tigercave.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
     private final JwtUtil jwtUtil;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -41,21 +43,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);    //세션을 사용하지 않는다고 설정한다.
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/api/user/signup").permitAll()   //해당 url은 필터를 거치지 않도록 설정 수정 permitAll은
-                .antMatchers("/api/user/login").permitAll()   //해당 url은 필터를 거치지 않도록 설정
-                .antMatchers("/api/**").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.USER.name())      //ADMIN, USER권한은 JWT필터를 거치도록 함
-//                .antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/api/user/signup").permitAll()
+                .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/**").hasAnyRole(UserRoleEnum.ADMIN.name(), UserRoleEnum.USER.name())
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
+        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());        //토큰이 없을 경우 발생하는 exceptionHandling
+        //http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());                  //Controller에서 접근 권한 exception 발생 시 Handling 작동
 
-        http.formLogin().loginProcessingUrl("/api/user/");
-//                loginPage("/api/user/login?error") // login-page 로그인 메소드 요청 구분해서
-//                .failureUrl("/")
-//                .permitAll();
+        http.formLogin().disable();
+
         return http.build();
     }
 }

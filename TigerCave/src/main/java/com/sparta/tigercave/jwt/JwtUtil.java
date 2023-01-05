@@ -1,10 +1,8 @@
 package com.sparta.tigercave.jwt;
 
 
-import com.sparta.tigercave.dto.AuthenticatedUserInfoDto;
 import com.sparta.tigercave.entity.UserRoleEnum;
 import com.sparta.tigercave.exception.CustomException;
-import com.sparta.tigercave.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,7 +23,7 @@ import java.util.Date;
 
 import static com.sparta.tigercave.exception.ErrorCode.INVALID_TOKEN;
 
-@Component          //개발자가 직접 작성한 class를 bean으로 등록하려고 할때 사용하는 어노테이션
+@Component
 @RequiredArgsConstructor
 public class JwtUtil {
 
@@ -46,41 +44,38 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    //JWT토큰 생성
     public String createToken(String username, UserRoleEnum role){
 
         Claims claims = Jwts.claims().setSubject(username);
 
-        //jwt payload에 저장되는 정보 단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        claims.put("role", role);   //ket/value 값으로 저장됨
+        claims.put("role", role);
         Date now = new Date();
         return BEARER_PREFIX+
                 Jwts.builder()
-                        .setClaims(claims)  //정보저장
-                        .setIssuedAt(now)   //토큰 발행 시간 정보
-                        .setExpiration(new Date(now.getTime() + TOKEN_TIME))    //토큰 만료 시간
-                        .signWith(signatureAlgorithm, key)    //사용할 암호화 알고리즘과 signature에 들어갈 secret값 세팅
-                        .compact();     //토큰 생성
+                        .setClaims(claims)
+                        .setIssuedAt(now)
+                        .setExpiration(new Date(now.getTime() + TOKEN_TIME))
+                        .signWith(signatureAlgorithm, key)
+                        .compact();
     }
 
-    //JWT토큰 유효성 검사 , 만료일자 확인
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            new CustomException(INVALID_TOKEN);
+            return false;
         }
-        return false;
     }
 
-    // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
-        System.out.println(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody());
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        }catch (Exception e){
+            return null;
+        }
     }
 
-    //header 토큰 가져오기
     public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
@@ -89,7 +84,6 @@ public class JwtUtil {
         return null;
     }
 
-    //인증객체 생성
     public Authentication createAuthentication(String username){
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
