@@ -34,6 +34,11 @@ public class PostController {
         return postService.createPost(postRequestDto, userDetails);
     }
 
+    @GetMapping("/api/post/{post_id}")
+    public PostResponseDto getPostById(@PathVariable Long post_id) {
+        return postService.getPostById(post_id);
+    }
+
     // 게시글 수정
     @PutMapping("/api/post/{post_id}")
     public PostResponseDto updatePost(@PathVariable Long post_id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetails userDetails) {

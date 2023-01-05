@@ -53,7 +53,7 @@ public class SecurityConfig {
 
 
         http.formLogin().loginProcessingUrl("/api/user/");
-//                loginPage("/api/user/login?error") // 이상해씨 login-page 로그인 메소드 요청 구분해서
+//                loginPage("/api/user/login?error") // login-page 로그인 메소드 요청 구분해서
 //                .failureUrl("/")
 //                .permitAll();
         return http.build();
