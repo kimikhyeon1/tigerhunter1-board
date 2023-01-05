@@ -29,14 +29,12 @@ public class ScheduleTasks {
         List<Comment> commentList = commentRepository.findAll();
 
         //코멘트가 있을 경우에만 실행
-        if (commentList.size() != 0) {
-            for (Comment comment : commentList) {
-                Long commentId = comment.getId();
-                Long cntLikeCnt = commentLikeRepository.countById(commentId);
+        commentList.stream().parallel().forEach(comment -> {
+            Long commentId = comment.getId();
+            Long cntLikeCnt = commentLikeRepository.countById(commentId);
 
-                commentService.updateLikeByScheduler(commentId, cntLikeCnt);
-            }
-        }
+            commentService.updateLikeByScheduler(commentId, cntLikeCnt);
+        });
 
     }
 
