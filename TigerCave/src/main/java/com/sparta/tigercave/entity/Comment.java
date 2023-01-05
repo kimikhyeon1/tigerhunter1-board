@@ -53,4 +53,6 @@ public class Comment extends Timestamped{
     public void deleteLike() {
         this.comment_likes -= 1;
     }
+
+    public void syncCommentLike(Long commentLikeCnt) { this.comment_likes = commentLikeCnt; }
 }
