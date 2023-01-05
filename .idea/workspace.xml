@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : workspace.xml update">
+    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostLikeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostLikeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/UserRoleEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/entity/UserRoleEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672821770895</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fix : PostController 사용하지 않는 어노테이션 수정">
+      <created>1672916729387</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1672916729387</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,6 +231,7 @@
     <MESSAGE value="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료" />
     <MESSAGE value="Fix : UserDetailImpl에 userId getter 추가 완료" />
     <MESSAGE value="Fix : workspace.xml update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix : workspace.xml update" />
+    <MESSAGE value="Fix : PostController 사용하지 않는 어노테이션 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix : PostController 사용하지 않는 어노테이션 수정" />
   </component>
 </project>
