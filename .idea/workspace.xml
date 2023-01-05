@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/service/PostService.java" afterDir="false" />
+    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : test">
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672928839726</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fix : PostService sein 달아놓은 System.out.println() 삭제 함">
+      <created>1672929455578</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1672929455578</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,6 +240,7 @@
     <MESSAGE value="Fix : workspace.xml update" />
     <MESSAGE value="Fix : PostController 사용하지 않는 어노테이션 수정" />
     <MESSAGE value="Fix : SecurityConfig.java 사용자 권한 관련 Exception 수정 및 게시판 전체조회 시 게시물 없을 경우 message 출력하도록 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix : SecurityConfig.java 사용자 권한 관련 Exception 수정 및 게시판 전체조회 시 게시물 없을 경우 message 출력하도록 수정" />
+    <MESSAGE value="Fix : PostService sein 달아놓은 System.out.println() 삭제 함" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix : PostService sein 달아놓은 System.out.println() 삭제 함" />
   </component>
 </project>

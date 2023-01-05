@@ -35,6 +35,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity signUp(@RequestBody @Validated UserDto.signUpRequestDto signUpRequestDto, BindingResult bindingresult){
 
+        System.out.println("테스트");
         //유효성 검사 실패할 경우 에러메세지 반환
         if(bindingresult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingresult.getAllErrors().toString());
