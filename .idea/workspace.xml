@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : SecurityConfig.java" />
+    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/PostController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/jwt/JwtAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/config/SecurityConfig.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,32 +74,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelOrder2&quot;: &quot;2&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth2&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;azul-17&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/beleif/Desktop/IdeaProjects/tigerhunter1-board&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;518d29472d81a45f7e69d3ac3f81d8df&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelOrder2": "2",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RequestMappingsPanelWidth2": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "azul-17",
+    "last_opened_file_path": "C:/Users/beleif/Desktop/IdeaProjects/tigerhunter1-board",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "spring.configuration.checksum": "518d29472d81a45f7e69d3ac3f81d8df",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\beleif\Desktop\IdeaProjects\tigerhunter1-board\TigerCave\src\main\resources" />
@@ -142,6 +150,7 @@
       <workItem from="1672809346679" duration="494000" />
       <workItem from="1672809898720" duration="3123000" />
       <workItem from="1672813038432" duration="447000" />
+      <workItem from="1672877088879" duration="5492000" />
     </task>
     <task id="LOCAL-00001" summary="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료">
       <created>1672746422492</created>
@@ -157,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672759704131</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix : workspace.xml update">
+      <created>1672821770895</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1672821770895</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +221,7 @@
     <MESSAGE value="Fix : jwtUtil 변수 수정" />
     <MESSAGE value="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료" />
     <MESSAGE value="Fix : UserDetailImpl에 userId getter 추가 완료" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix : UserDetailImpl에 userId getter 추가 완료" />
+    <MESSAGE value="Fix : workspace.xml update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix : workspace.xml update" />
   </component>
 </project>
