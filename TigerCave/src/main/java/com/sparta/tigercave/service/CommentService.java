@@ -86,4 +86,12 @@ public class CommentService {
         commentRepository.deleteById(id);
         return new ResponseEntity("댓글이 삭제되었습니다.", HttpStatus.OK);
     }
+
+    @Transactional
+    public void updateLikeByScheduler(Long id, Long cnt) {
+        Comment comment = commentRepository.findById(id).orElseThrow(
+                () -> new CustomException(COMMENT_NOT_FOUND)
+        );
+        comment.syncCommentLike(cnt);
+    }
 }
