@@ -9,8 +9,6 @@
         <img width="110px;" height="110px;" src="https://cdn-icons-png.flaticon.com/512/3157/3157548.png">
 </p>
 
-<br>
-
 <h1 align="middle"> 호랑이굴 </h1>
 
 <p align="center"><span style='background-color: #F7DDBE'> Spring Security를 적용한 착호갑사 블로그 백엔드 서버 만들기</span></p>
