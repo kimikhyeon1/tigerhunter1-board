@@ -18,7 +18,7 @@ public class PostResponseDto {
     private String title;
     private String username;
     private String contents;
-    private int likecount;
+    private int likeCount;
     private List<CommentResponseDto> commentList;
 
 
@@ -29,7 +29,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.username = post.getUser().getUsername();
         this.contents = post.getContents();
-        this.likecount = post.getCountOfLikes();
+        this.likeCount = post.getCountOfLikes();
 
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
