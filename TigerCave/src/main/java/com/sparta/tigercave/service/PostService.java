@@ -48,6 +48,14 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    @Transactional(readOnly = true)
+    public PostResponseDto getPostById(Long post_id) {
+        Post post = postRepository.findById(post_id).orElseThrow(
+                () -> new CustomException(POST_NOT_FOUND)
+        );
+        return new PostResponseDto(post);
+    }
+
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, UserDetails userDetails) {
         // 게시글 존재 여부 확인
