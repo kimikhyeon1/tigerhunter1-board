@@ -40,8 +40,7 @@ public class PostService {
 
         // userDetails에서 가져온 사용자 정보를 사용하여 Users의 인스턴스 가져오기
         User user = userRepository.findByUsername(userDetails.getUsername()).get();
-
-        System.out.println("여기까지 들어오는 건가??");
+        
         // DB에 게시글을 저장하기
         Post post = postRepository.saveAndFlush(new Post(user, postRequestDto));
 
