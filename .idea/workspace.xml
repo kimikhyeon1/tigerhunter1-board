@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : test">
-      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/controller/UserController.java" afterDir="false" />
+    <list default="true" id="424b7fda-2238-4613-ba3f-a1e1b9c8f02a" name="Changes" comment="Fix : SecurityConfig.java 사용자 권한 관련 Exception 수정 및 게시판 전체조회 시 게시물 없을 경우 message 출력하도록 수정">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/TigerCave/src/main/java/com/sparta/tigercave/config/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +51,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/security" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -146,6 +147,7 @@
       <workItem from="1672809898720" duration="3123000" />
       <workItem from="1672813038432" duration="447000" />
       <workItem from="1672877088879" duration="5492000" />
+      <workItem from="1672964821037" duration="447000" />
     </task>
     <task id="LOCAL-00001" summary="Fix : Users -&gt; User로 변경(Users 영향권 전부 수정함), UserDetailImpl에 userId 추가 완료">
       <created>1672746422492</created>

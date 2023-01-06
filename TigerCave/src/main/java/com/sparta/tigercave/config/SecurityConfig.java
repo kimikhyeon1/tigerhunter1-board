@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());        //토큰이 없을 경우 발생하는 exceptionHandling
+        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());           //토큰이 없을 경우 발생하는 exceptionHandling
         //http.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler());                  //Controller에서 접근 권한 exception 발생 시 Handling 작동
 
         http.formLogin().disable();
