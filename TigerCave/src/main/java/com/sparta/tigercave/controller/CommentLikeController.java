@@ -19,9 +19,9 @@ public class CommentLikeController {
     private final CommentLikeService commentLikeService;
 
     // 좋아요 등록
-    @PostMapping("/{comment_id}/like")
-    public ResponseEntity addLike(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetailImpl userDetail) {
-        Boolean likeOpt = commentLikeService.addLike(comment_id, userDetail.getUserId());
+    @PostMapping("/{commentId}/like")
+    public ResponseEntity addLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailImpl userDetail) {
+        Boolean likeOpt = commentLikeService.addLike(commentId, userDetail.getUserId());
 
         // 좋아요 등록, 이미 좋아요를 한 사용자의 경우 Exception
         if (likeOpt) {
@@ -32,9 +32,9 @@ public class CommentLikeController {
     }
 
     //좋아요 취소
-    @DeleteMapping("/{comment_id}/like")
-    public ResponseEntity deleteLike(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetailImpl userDetail) {
-        Boolean likeOpt = commentLikeService.deleteLike(comment_id, userDetail.getUserId());
+    @DeleteMapping("/{commentId}/like")
+    public ResponseEntity deleteLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailImpl userDetail) {
+        Boolean likeOpt = commentLikeService.deleteLike(commentId, userDetail.getUserId());
 
         // 좋아요 취소, 아직 좋아요를 안 한 사용자의 경우 Exception
         if (likeOpt) {

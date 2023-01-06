@@ -18,20 +18,20 @@ public class CommentController {
     private final CommentService commentService;
 
     // 댓글 작성하기
-    @PostMapping("/{post_id}/comment")
-    public CommentResponseDto createComment(@PathVariable Long post_id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
-        return commentService.createComment(post_id, commentRequestDto, userDetails.getUsername());
+    @PostMapping("/{postId}/comment")
+    public CommentResponseDto createComment(@PathVariable Long postId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        return commentService.createComment(postId, commentRequestDto, userDetails.getUsername());
     }
 
     // 댓글 수정하기
-    @PutMapping("/comment/{comment_id}")
-    public CommentResponseDto updateCommment(@PathVariable Long comment_id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
-        return commentService.updateComment(comment_id, commentRequestDto, userDetails.getUsername());
+    @PutMapping("/comment/{commentId}")
+    public CommentResponseDto updateCommment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        return commentService.updateComment(commentId, commentRequestDto, userDetails.getUsername());
     }
 
     // 댓글 삭제하기
-    @DeleteMapping("comment/{comment_id}")
-    public ResponseEntity deleteComment(@PathVariable Long comment_id, @AuthenticationPrincipal UserDetails userDetails) {
-        return commentService.deleteComment(comment_id, userDetails.getUsername());
+    @DeleteMapping("comment/{commentId}")
+    public ResponseEntity deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetails userDetails) {
+        return commentService.deleteComment(commentId, userDetails.getUsername());
     }
 }

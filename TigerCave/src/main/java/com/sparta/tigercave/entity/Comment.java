@@ -19,12 +19,12 @@ public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    // FK(외래키)로 post_id를 갖습니다.
+    // FK(외래키)로 postId를 갖습니다.
     @ManyToOne
     @JoinColumn(name ="postId")
     Post post;
 
-    // FK(외래키)로 user_id를 갖습니다.
+    // FK(외래키)로 userId를 갖습니다.
     @ManyToOne
     @JoinColumn(name ="userId")
     User user;

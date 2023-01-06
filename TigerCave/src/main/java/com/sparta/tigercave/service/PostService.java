@@ -49,8 +49,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResponseDto getPostById(Long post_id) {
-        Post post = postRepository.findById(post_id).orElseThrow(
+    public PostResponseDto getPostById(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new CustomException(POST_NOT_FOUND)
         );
         return new PostResponseDto(post);

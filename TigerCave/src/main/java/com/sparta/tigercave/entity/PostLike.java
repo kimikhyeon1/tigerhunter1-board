@@ -12,15 +12,15 @@ public class PostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "post_like_id")
+    @Column(name = "POST_LIKE_ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id" )
+    @JoinColumn(name = "POST_ID" )
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" )
+    @JoinColumn(name = "USER_ID" )
     private User user;
 
     public PostLike(Post post,User user){

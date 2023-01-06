@@ -23,14 +23,14 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public boolean addLike(Long comment_id, Long user_id) {
+    public boolean addLike(Long commentId, Long userId) {
         //사용자 확인
-        User user = userRepository.findById(user_id).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)
         );
 
         //댓글 확인
-        Comment comment = commentRepository.findById(comment_id).orElseThrow(
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(COMMENT_NOT_FOUND)
         );
 
@@ -49,14 +49,14 @@ public class CommentLikeService {
     }
 
     @Transactional
-    public boolean deleteLike(Long comment_id, Long user_id) {
+    public boolean deleteLike(Long commentId, Long userId) {
         //사용자 확인
-        User user = userRepository.findById(user_id).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(USER_NOT_FOUND)
         );
 
         //댓글 확인
-        Comment comment = commentRepository.findById(comment_id).orElseThrow(
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(COMMENT_NOT_FOUND)
         );
 

@@ -20,6 +20,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new CustomException(USER_NOT_FOUND));
-        return new UserDetailImpl(user, user.getUser_id(),user.getUsername(), user.getPassword());
+        return new UserDetailImpl(user, user.getId(),user.getUsername(), user.getPassword());
     }
 }
